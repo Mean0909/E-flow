@@ -604,16 +604,16 @@ const app = {
 
   seedDemoData(showAlert = true) {
     this.data.users = [
-      { id: 1, name: "Sok Dara", email: "dara@serc.gov.kh", type: "SERC User", status: "Active" },
-      { id: 2, name: "Rin Srey", email: "rin.srey@company.com", type: "Company User", status: "Active" },
-      { id: 3, name: "Nita Chan", email: "nita@public.com", type: "Public User", status: "Inactive" },
+      { id: 1, name: "Mean", email: "mean@serc.gov.kh", type: "SERC User", status: "Active" },
+      { id: 2, name: "Hoy mean", email: "hoy.mean@company.com", type: "Company User", status: "Active" },
+      { id: 3, name: "Serey both", email: "sereyboth@public.com", type: "Public User", status: "Inactive" },
       { id: 4, name: "Admin SERC", email: "admin@serc.gov.kh", type: "SERC User", status: "Active" }
     ];
 
     this.data.requestForms = [
-      { id: "REQ-001", title: "General Request Form", name: "Sok Dara", status: "Pending" },
-      { id: "REQ-002", title: "Company Request Form", name: "Rin Srey", status: "Approved" },
-      { id: "REQ-003", title: "Public Service Form", name: "Nita Chan", status: "In Review" }
+      { id: "REQ-001", title: "General Request Form", name: "Mean", status: "Pending" },
+      { id: "REQ-002", title: "Company Request Form", name: "Hoy mean", status: "Approved" },
+      { id: "REQ-003", title: "Public Service Form", name: "Sery both", status: "In Review" }
     ];
 
     this.data.cases = [
