@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="km" class="h-full">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SERC Document Management System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Siemreap&display=swap" rel="stylesheet">
+
+    <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+            background-color: #f0f0f0;
+            font-family: 'Khmer OS Siemreap', sans-serif;
+        }
+    </style>
+
+    <script src="E-flow.js"></script>
+</head>
+
+<body class="h-full bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white">
+    <!-- Top Navigation -->
+    <nav class="bg-white dark:bg-gray-800 shadow-lg border-b border-gray-200 dark:border-gray-700">
+        <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex justify-between h-16​">
+                    <div class="flex items-center">
+                        <img src="img/logo_serc.png" alt="SERC" class="h-10 w-10 mr-3">
+                        <div>
+                            <h1 class="text-xl font-bold text-gray-900 dark:text-white">ប្រព័ន្ធគ្រប់គ្រងឯកសារ ន.ម.ក
+                            </h1>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">Document Management System</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <!-- Phase Indicator -->
+                    <div class="hidden md:flex items-center space-x-2">
+                        <span class="text-sm text-gray-600 dark:text-gray-400">Phase:</span>
+                        <select id="currentPhase" class="text-sm bg-primary text-white px-2 py-1 rounded">
+                            <option value="1">Phase 1: Internal Review</option>
+                            <option value="2">Phase 2: Registration</option>
+                            <option value="3">Phase 3: Integration</option>
+                        </select>
+                    </div>
+                    <!-- User Role -->
+                    <select id="userRole"
+                        class="bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white px-3 py-1 rounded-md text-sm border border-gray-300 dark:border-gray-600">
+                        <option value="admin">SERC Admin</option>
+                        <option value="reviewer">SERC Reviewer</option>
+                        <option value="company">Company User</option>
+                        <option value="public">Public User</option>
+                    </select>
+                    <!-- Notifications -->
+                    <button class="relative p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                        <i class="fas fa-bell text-lg"></i>
+                        <span
+                            class="absolute top-0 right-0 inline-flex items-center justify-center px-1 py-1 text-xs font-bold leading-none text-white bg-red-600 rounded-full">3</span>
+                    </button>
+                    <!-- User Profile -->
+                    <div class="flex items-center space-x-2">
+                        <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                            <i class="fas fa-user text-white text-sm"></i>
+                        </div>
+                        <span class="text-sm font-medium" id="currentUser">Admin User</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="flex h-screen padding-11">
+        <!-- Sidebar -->
+        <div
+            class="w-64 inset-y-0 bg-white dark:bg-gray-800 shadow-md border-r border-gray-200 dark:border-gray-700 fixed h-full top-16">
+            <div class="p-4">
+                <!-- Main Navigation -->
+                <nav class="space-y-1">
+                    <button onclick="showView('dashboard')"
+                        class="nav-btn w-full text-left px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center text-sm">
+                        <i class="fa-solid fa-house mr-3 w-4" style="color: #000000;"></i>
+                        ផ្ទាំងប្រតិបត្តិការ
+                    </button>
+
+                    <button onclick="showView('login-mgmt')"
+                        class="nav-btn w-full text-left px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center text-sm">
+                        <i class="fas fa-sign-in-alt mr-3 w-4"></i>
+                        ការគ្រប់គ្រងការចុះឈ្មោះ
+                    </button>
+                    <button onclick="showView('user-mgmt')"
+                        class="nav-btn w-full text-left px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center text-sm">
+                        <i class="fas fa-users mr-3 w-4"></i>
+                        ការគ្រប់គ្រងអ្នកប្រើប្រាស់
+                    </button>
+                    <button onclick="showView('document-in')"
+                        class="nav-btn w-full text-left px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center text-sm">
+                        <i class="fas fa-file-import mr-3 w-4"></i>
+                        ឯកសារ-ចូល
+                    </button>
+                    <button onclick="showView('case-mgmt')"
+                        class="nav-btn w-full text-left px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center text-sm">
+                        <i class="fas fa-briefcase mr-3 w-4"></i>
+                        ការគ្រប់គ្រងករណី
+                    </button>
+                    <button onclick="showView('document-out')"
+                        class="nav-btn w-full text-left px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center text-sm">
+                        <i class="fas fa-file-export mr-3 w-4"></i>
+                        ឯកសារ-ចេញ
+                    </button>
+
+                    <button onclick="showView('application-mgmt')"
+                        class="nav-btn w-full text-left px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center text-sm">
+                        <i class="fas fa-file-alt mr-3 w-4"></i>
+                        ការគ្រប់គ្រងកម្មវិធី
+                    </button>
+                    <button onclick="showView('review-process')"
+                        class="nav-btn w-full text-left px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center text-sm">
+                        <i class="fas fa-tasks mr-3 w-4"></i>
+                        ដំណើរការពិនិត្យ
+                    </button>
+                    <button onclick="showView('meeting-mgmt')"
+                        class="nav-btn w-full text-left px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center text-sm">
+                        <i class="fas fa-calendar-alt mr-3 w-4"></i>
+                        ការប្រជុំ
+                    </button>
+
+                    <!-- Settings -->
+                    <div class="pt-4">
+                        <h3
+                            class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">
+                            Settings</h3>
+                        <button onclick="showView('inbox')"
+                            class="nav-btn w-full text-left px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center text-sm">
+                            <i class="fas fa-inbox mr-3 w-4"></i>
+                            ការជូនដំណឹង
+                        </button>
+                        <button onclick="showView('company-view')"
+                            class="nav-btn w-full text-left px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center text-sm">
+                            <i class="fas fa-building mr-3 w-4"></i>
+                            ក្រុមហ៊ុន
+                        </button>
+                        <button onclick="showView('statistics')"
+                            class="nav-btn w-full text-left px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center text-sm">
+                            <i class="fas fa-chart-bar mr-3 w-4"></i>
+                            ស្ថិតិ
+                        </button>
+                        <button onclick="showView('profile')"
+                            class="nav-btn w-full text-left px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center text-sm">
+                            <i class="fas fa-user-cog mr-3 w-4"></i>
+                            ប្រវត្តិរូបផ្ទាល់ខ្លួន
+                        </button>
+                        <button onclick="showView('attendance')"
+                            class="nav-btn w-full text-left px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center text-sm">
+                            <i class="fas fa-calendar-check mr-3 w-4"></i>
+                            អវត្តមាន
+                        </button>
+                        <button onclick="showView('leaveRequests')"
+                            class="nav-btn w-full text-left px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center text-sm">
+                            <i class="fas fa-file-alt mr-3 w-4"></i>
+                            ការសុំច្បាប់
+                        </button>
+                        <button onclick="showView('access-control')"
+                            class="nav-btn w-full text-left px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center text-sm">
+                            <i class="fas fa-shield-alt mr-3 w-4"></i>
+                            ការគ្រប់គ្រងការចូលប្រើប្រព័ន្ធ
+                        </button>
+                    </div>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 ml-64 overflow-auto">
+            <!-- Dashboard View -->
+            <div id="dashboard" class="view p-6">
+                <div class="mb-6">
+                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white">ប្រព័ន្ធគ្រប់គ្រងឯកសារ ន.ម.ក​ </h1>
+                    <p class="text-gray-600 dark:text-gray-400">ផ្ទាំងគ្រប់គ្រងការអនុវត្តបីដំណាក់កាល</p>
+                </div>
+
+                <!-- Phase Progress -->
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
+                    <h2 class="text-lg font-semibold mb-4">វឌ្ឍនភាពនៃការអនុវត្ត</h2>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-check text-white text-sm"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-medium">ដំណាក់កាលទី 1៖ ប្រព័ន្ធត្រួតពិនិត្យដំណើរការផ្ទៃក្នុង</h3>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">ប្រព័ន្ធគ្រប់គ្រងឯកសារ</p>
+                                </div>
+                            </div>
+                            <span class="text-green-600 font-semibold">100%</span>
+                        </div>
+
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-clock text-white text-sm"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-medium">ដំណាក់កាលទី 2: ការអភិវឌ្ឍន៍ប្រព័ន្ធចុះឈ្មោះ</h3>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">ការចុះឈ្មោះ
+                                        និងការដាក់ពាក្យជាសាធារណៈ</p>
+                                </div>
+                            </div>
+                            <span class="text-yellow-600 font-semibold">75%</span>
+                        </div>
+
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-3">
+                                <div
+                                    class="w-8 h-8 bg-gray-300 dark:bg-gray-600 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-hourglass-start text-gray-600 dark:text-gray-300 text-sm"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-medium">ដំណាក់កាលទី 3: ការរួមបញ្ចូលគ្នានៃការត្រួតពិនិត្យ
+                                        និងការចុះឈ្មោះ</h3>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">ការរួមបញ្ចូលប្រព័ន្ធពេញលេញ</p>
+                                </div>
+                            </div>
+                            <span class="text-gray-600 dark:text-gray-400 font-semibold">25%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- System Statistics -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                        <div class="flex items-center">
+                            <div class="p-3 rounded-full bg-blue-100 dark:bg-blue-900">
+                                <i class="fas fa-file-alt text-blue-600 dark:text-blue-300"></i>
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-sm text-gray-600 dark:text-gray-400">ករណីសរុប</p>
+                                <p class="text-2xl font-bold" id="totalCases">1,247</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                        <div class="flex items-center">
+                            <div class="p-3 rounded-full bg-yellow-100 dark:bg-yellow-900">
+                                <i class="fas fa-clock text-yellow-600 dark:text-yellow-300"></i>
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-sm text-gray-600 dark:text-gray-400">រង់ចាំការពិនិត្យឡើងវិញ</p>
+                                <p class="text-2xl font-bold" id="pendingReview">89</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                        <div class="flex items-center">
+                            <div class="p-3 rounded-full bg-green-100 dark:bg-green-900">
+                                <i class="fas fa-check text-green-600 dark:text-green-300"></i>
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-sm text-gray-600 dark:text-gray-400">បានអនុម័តនៅថ្ងៃនេះ</p>
+                                <p class="text-2xl font-bold" id="approvedToday">23</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                        <div class="flex items-center">
+                            <div class="p-3 rounded-full bg-purple-100 dark:bg-purple-900">
+                                <i class="fas fa-users text-purple-600 dark:text-purple-300"></i>
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-sm text-gray-600 dark:text-gray-400">អ្នកប្រើប្រាស់សកម្ម</p>
+                                <p class="text-2xl font-bold" id="activeUsers">156</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                        <h3 class="text-lg font-semibold mb-4">សកម្មភាពរហ័ស</h3>
+                        <div class="space-y-3">
+                            <button onclick="showView('case-mgmt')"
+                                class="w-full text-left p-3 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-md flex items-center">
+                                <i class="fas fa-plus-circle text-primary mr-3"></i>
+                                បង្កើតករណីថ្មី។
+                            </button>
+                            <button onclick="showView('review-process')"
+                                class="w-full text-left p-3 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-md flex items-center">
+                                <i class="fas fa-tasks text-primary mr-3"></i>
+                                ពិនិត្យមើលកម្មវិធីដែលមិនទាន់សម្រេច
+                            </button>
+                            <button onclick="showView('statistics')"
+                                class="w-full text-left p-3 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-md flex items-center">
+                                <i class="fas fa-chart-line text-primary mr-3"></i>
+                                បង្កើតរបាយការណ៍
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                        <h3 class="text-lg font-semibold mb-4">សកម្មភាពថ្មីៗ</h3>
+                        <div class="space-y-3" id="recentActivity">
+                            <!-- Activity items will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Login Management View -->
+            <div id="login-mgmt" class="view hidden p-6">
+                <div class="mb-6">
+                    <h1 class="text-2xl font-bold">ការគ្រប់គ្រងការចូល</h1>
+                    <p class="text-gray-600 dark:text-gray-400">ការបង្កើតគណនី និងការរួមបញ្ចូល CamDigikey</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Account Creation -->
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                        <h3 class="text-lg font-semibold mb-4">ការបង្កើតគណនី</h3>
+                        <form class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">ប្រភេទអ្នកប្រើប្រាស់</label>
+                                <select
+                                    class="w-full border dark:border-gray-600 rounded-md px-3 py-2 text-base bg-white dark:bg-gray-700">
+                                    <option>មន្រ្ដី ន.ម.ក</option>
+                                    <option>ការប្រើប្រាស់ក្រុមហ៊ុន</option>
+                                    <option>ថ្នាក់ដឹកនាំ</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2">ឈ្មោះពេញ</label>
+                                <input type="text"
+                                    class="w-full border dark:border-gray-600 rounded-md px-3 py-2 text-base bg-white dark:bg-gray-700">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2">អ៊ីមែល</label>
+                                <input type="email"
+                                    class="w-full border dark:border-gray-600 rounded-md px-3 py-2 text-base bg-white dark:bg-gray-700">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2">លេខសម្គាល់ CamDigikey</label>
+                                <input type="text"
+                                    class="w-full border dark:border-gray-600 rounded-md px-3 py-2 text-base bg-white dark:bg-gray-700">
+                            </div>
+                            <button type="submit"
+                                class="w-full bg-primary hover:bg-primary-dark text-white py-2 px-4 rounded-md">
+                                បង្កើតគណនី
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- CamDigikey Integration Status -->
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                        <h3 class="text-lg font-semibold mb-4">សមាហរណកម្ម CamDigikey</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between p-3 bg-green-50 dark:bg-green-900 rounded-md">
+                                <span class="text-sm font-medium">ការតភ្ជាប់ API</span>
+                                <span class="text-green-600 dark:text-green-300">
+                                    <i class="fas fa-check-circle"></i> បានភ្ជាប់
+                                </span>
+                            </div>
+                            <div class="flex items-center justify-between p-3 bg-green-50 dark:bg-green-900 rounded-md">
+                                <span class="text-sm font-medium">សេវាកម្មផ្ទៀងផ្ទាត់</span>
+                                <span class="text-green-600 dark:text-green-300">
+                                    <i class="fas fa-check-circle"></i> សកម្ម
+                                </span>
+                            </div>
+                            <div
+                                class="flex items-center justify-between p-3 bg-yellow-50 dark:bg-yellow-900 rounded-md">
+                                <span class="text-sm font-medium">ស្ថានភាពសមកាលកម្ម</span>
+                                <span class="text-yellow-600 dark:text-yellow-300">
+                                    <i class="fas fa-sync-alt"></i> ធ្វើសមកាលកម្ម
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- User Management View -->
+            <div id="user-mgmt" class="view hidden p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <h1 class="text-2xl font-bold">ការគ្រប់គ្រងអ្នកប្រើប្រាស់</h1>
+                        <p class="text-gray-600 dark:text-gray-400">គ្រប់គ្រងអ្នកប្រើប្រាស់ SERC ខាងក្នុង
+                            អ្នកប្រើប្រាស់ក្រុមហ៊ុន និងអ្នកប្រើប្រាស់សាធារណៈ</p>
+                    </div>
+                    <button onclick="showAddUserModal()"
+                        class="bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-md">
+                        <i class="fas fa-plus mr-2"></i>បន្ថែមអ្នកប្រើប្រាស់
+                    </button>
+                </div>
+
+                <!-- User Statistics -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                        <h3 class="text-lg font-semibold mb-2">អ្នកប្រើប្រាស់ ន.ម.ក</h3>
+                        <p class="text-3xl font-bold text-blue-600 dark:text-blue-400">42</p>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">បុគ្គលិកផ្ទៃក្នុង</p>
+                    </div>
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                        <h3 class="text-lg font-semibold mb-2">អ្នកប្រើប្រាស់ក្រុមហ៊ុន</h3>
+                        <p class="text-3xl font-bold text-green-600 dark:text-green-400">89</p>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">ក្រុមហ៊ុនដែលមានបទប្បញ្ញត្តិ</p>
+                    </div>
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                        <h3 class="text-lg font-semibold mb-2">ថ្នាក់ដឹកនាំ</h3>
+                        <p class="text-3xl font-bold text-purple-600 dark:text-purple-400">10</p>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">ចាប់ពីប្រធាននាយកដ្ឋាន ដល់ អគ្គនាយក</p>
+                    </div>
+                </div>
+
+                <!-- Users Table -->
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+                    <div class="p-4 border-b border-gray-200 dark:border-gray-700">
+                        <div class="flex space-x-4">
+                            <input type="text" placeholder="Search users..."
+                                class="border dark:border-gray-600 rounded-md px-3 py-2 text-base bg-white dark:bg-gray-700 flex-1">
+                            <select
+                                class="border dark:border-gray-600 rounded-md px-3 py-2 text-base bg-white dark:bg-gray-700">
+                                <option>All User Types</option>
+                                <option>SERC Users</option>
+                                <option>Company Users</option>
+                                <option>Public Users</option>
+                            </select>
+                        </div>
+                    </div>
+                    <table class="min-w-full">
+                        <thead class="bg-gray-50 dark:bg-gray-700">
+                            <tr>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                    User</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                    Type</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                    Status</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                    Last Login</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                    Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTable"
+                            class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                            <!-- Users will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Case Management View -->
+            <div id="case-mgmt" class="view hidden p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <h1 class="text-2xl font-bold">ការគ្រប់គ្រងករណី</h1>
+                        <p class="text-gray-600 dark:text-gray-400">
+                            ករណីខាងក្នុង/ខាងក្រៅដែលមានការបង្កើតលេខសម្គាល់ករណីស្វ័យប្រវត្តិ</p>
+                    </div>
+                    <button onclick="showCreateCaseModal()"
+                        class="bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-md">
+                        <i class="fas fa-plus mr-2"></i>បង្កើតករណី (Create Case)
+                    </button>
+                </div>
+
+                <!-- Case Statistics -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                        <h3 class="text-sm text-gray-600 dark:text-gray-400 mb-1">ករណីសរុប</h3>
+                        <p class="text-2xl font-bold">1,247</p>
+                    </div>
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                        <h3 class="text-sm text-gray-600 dark:text-gray-400 mb-1">បើកករណី</h3>
+                        <p class="text-2xl font-bold text-blue-600 dark:text-blue-400">89</p>
+                    </div>
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                        <h3 class="text-sm text-gray-600 dark:text-gray-400 mb-1">កំពុងដំណើរការ</h3>
+                        <p class="text-2xl font-bold text-yellow-600 dark:text-yellow-400">156</p>
+                    </div>
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                        <h3 class="text-sm text-gray-600 dark:text-gray-400 mb-1">បានបញ្ចប់</h3>
+                        <p class="text-2xl font-bold text-green-600 dark:text-green-400">1,002</p>
+                    </div>
+                </div>
+
+                <!-- Cases Table -->
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+                    <div class="p-4 border-b border-gray-200 dark:border-gray-700">
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                            <input type="text" placeholder="Search cases..."
+                                class="border dark:border-gray-600 rounded-md px-3 py-2 text-base bg-white dark:bg-gray-700">
+                            <select
+                                class="border dark:border-gray-600 rounded-md px-3 py-2 text-base bg-white dark:bg-gray-700">
+                                <option>គ្រប់ប្រភេទs</option>
+                                <option>ផ្ទៃក្នុង</option>
+                                <option>ខាងក្រៅ</option>
+                            </select>
+                            <select
+                                class="border dark:border-gray-600 rounded-md px-3 py-2 text-base bg-white dark:bg-gray-700">
+                                <option>ស្ថានភាពទាំងអស់</option>
+                                <option>បើក</option>
+                                <option>កំពុងដំណើរការ</option>
+                                <option>បានបញ្ចប់</option>
+                                <option>បិទ</option>
+                            </select>
+                            <button class="bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-md">
+                                <i class="fas fa-search mr-2"></i>តម្រង
+                            </button>
+                        </div>
+                    </div>
+                    <table class="min-w-full">
+                        <thead class="bg-gray-50 dark:bg-gray-700">
+                            <tr>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                    លេខសម្គាល់ករណី</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                    ចំណងជើង</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                    ប្រភេទ</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                    ស្ថានភាព</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                    បានបង្កើត</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                    សកម្មភាព</th>
+                            </tr>
+                        </thead>
+                        <tbody id="casesTable"
+                            class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                            <!-- Cases will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Application Management View -->
+            <div id="application-mgmt" class="view hidden p-6">
+                <div class="mb-6">
+                    <h1 class="text-2xl font-bold">ការគ្រប់គ្រងកម្មវិធី</h1>
+                    <p class="text-gray-600 dark:text-gray-400">ការបញ្ជូនតាមអ៊ីនធឺណិតសម្រាប់អាជ្ញាប័ណ្ណ វិញ្ញាបនប័ត្រ
+                        និងការផ្លាស់ប្តូរ</p>
+                </div>
+
+                <!-- Application Types -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-lg font-semibold">ពាក្យស្នើសុំអាជ្ញាប័ណ្ណ</h3>
+                            <i class="fas fa-certificate text-blue-600 dark:text-blue-400 text-2xl"></i>
+                        </div>
+                        <p class="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">45</p>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">រង់ចាំ៖ 12 • អនុម័ត៖ 33</p>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-lg font-semibold">វិញ្ញាបនប័ត្រ</h3>
+                            <i class="fas fa-award text-green-600 dark:text-green-400 text-2xl"></i>
+                        </div>
+                        <p class="text-3xl font-bold text-green-600 dark:text-green-400 mb-2">28</p>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">រង់ចាំ៖ 8 • អនុម័ត៖ 20</p>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-lg font-semibold">ការផ្លាស់ប្តូរ/បច្ចុប្បន្នភាព</h3>
+                            <i class="fas fa-edit text-purple-600 dark:text-purple-400 text-2xl"></i>
+                        </div>
+                        <p class="text-3xl font-bold text-purple-600 dark:text-purple-400 mb-2">67</p>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">រង់ចាំ៖ 23 • អនុម័ត៖ 44</p>
+                    </div>
+                </div>
+
+                <!-- Application Tracking -->
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                    <h3 class="text-lg font-semibold mb-4">ការតាមដានកម្មវិធីតាមពេលវេលាជាក់ស្តែង</h3>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full">
+                            <thead class="bg-gray-50 dark:bg-gray-700">
+                                <tr>
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                        លេខសម្គាល់កម្មវិធី</th>
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                        ប្រភេទ</th>
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                        ក្រុមហ៊ុន</th>
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                        ស្ថានភាព</th>
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                        ការទូទាត់</th>
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                        បានដាក់ស្នើ</th>
+                                </tr>
+                            </thead>
+                            <tbody id="applicationsTable"
+                                class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                                <!-- Applications will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Review Process View -->
+            <div id="review-process" class="view hidden p-6">
+                <div class="mb-6">
+                    <h1 class="text-2xl font-bold">ដំណើរការពិនិត្យឌីជីថល</h1>
+                    <p class="text-gray-600 dark:text-gray-400">លំហូរការងារ៖ កំពុងរង់ចាំ → បានអនុម័ត → បដិសេធ →
+                        បានបញ្ចប់ →
+                        ត្រឡប់សម្រាប់ការកែប្រែ</p>
+                </div>
+
+                <!-- Workflow Visualization -->
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
+                    <h3 class="text-lg font-semibold mb-4">ពិនិត្យមើលលំហូរការងារ</h3>
+                    <div class="flex justify-center items-center space-x-4 overflow-x-auto">
+                        <div class="text-center min-w-0 flex-shrink-0">
+                            <div
+                                class="w-16 h-16 bg-yellow-100 dark:bg-yellow-900 rounded-full flex items-center justify-center mb-2">
+                                <i class="fas fa-clock text-yellow-600 dark:text-yellow-300 text-2xl"></i>
+                            </div>
+                            <h4 class="font-semibold text-sm">កំពុងរង់ចាំ</h4>
+                            <p class="text-xs text-gray-600 dark:text-gray-400">ការដាក់ស្នើដំបូង</p>
+                        </div>
+
+                        <div class="flex-1 h-0.5 bg-gray-300 dark:bg-gray-600 min-w-8"></div>
+
+                        <div class="text-center min-w-0 flex-shrink-0">
+                            <div
+                                class="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mb-2">
+                                <i class="fas fa-check text-green-600 dark:text-green-300 text-2xl"></i>
+                            </div>
+                            <h4 class="font-semibold text-sm">បានអនុម័ត</h4>
+                            <p class="text-xs text-gray-600 dark:text-gray-400">ការពិនិត្យឡើងវិញបានឆ្លងកាត់</p>
+                        </div>
+
+                        <div class="flex-1 h-0.5 bg-gray-300 dark:bg-gray-600 min-w-8"></div>
+
+                        <div class="text-center min-w-0 flex-shrink-0">
+                            <div
+                                class="w-16 h-16 bg-red-100 dark:bg-red-900 rounded-full flex items-center justify-center mb-2">
+                                <i class="fas fa-times text-red-600 dark:text-red-300 text-2xl"></i>
+                            </div>
+                            <h4 class="font-semibold text-sm">ច្រានចោល</h4>
+                            <p class="text-xs text-gray-600 dark:text-gray-400">មិនបំពេញតាមលក្ខណៈវិនិច្ឆ័យ</p>
+                        </div>
+
+                        <div class="flex-1 h-0.5 bg-gray-300 dark:bg-gray-600 min-w-8"></div>
+
+                        <div class="text-center min-w-0 flex-shrink-0">
+                            <div
+                                class="w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center mb-2">
+                                <i class="fas fa-flag-checkered text-blue-600 dark:text-blue-300 text-2xl"></i>
+                            </div>
+                            <h4 class="font-semibold text-sm">បានបញ្ចប់</h4>
+                            <p class="text-xs text-gray-600 dark:text-gray-400">ដំណើរការបានបញ្ចប់</p>
+                        </div>
+
+                        <div class="flex-1 h-0.5 bg-gray-300 dark:bg-gray-600 min-w-8"></div>
+
+                        <div class="text-center min-w-0 flex-shrink-0">
+                            <div
+                                class="w-16 h-16 bg-orange-100 dark:bg-orange-900 rounded-full flex items-center justify-center mb-2">
+                                <i class="fas fa-undo text-orange-600 dark:text-orange-300 text-2xl"></i>
+                            </div>
+                            <h4 class="font-semibold text-sm">បានត្រឡប់មកវិញ</h4>
+                            <p class="text-xs text-gray-600 dark:text-gray-400">ត្រូវការការកែប្រែ</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Current Reviews -->
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                    <h3 class="text-lg font-semibold mb-4">ឯកសារកំពុងរង់ចាំការពិនិត្យឡើងវិញ</h3>
+                    <div class="space-y-4" id="pendingReviews">
+                        <!-- Pending reviews will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Document In View -->
+            <div id="document-in" class="view hidden p-4 md:p-6">
+                <h1 class="text-2xl font-bold mb-4">ឯកសារ-ចូល</h1>
+                <button id="toggleUploadFormBtn"
+                    class="mb-4 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">បញ្ចូលឯកសារ</button>
+
+                <div id="uploadFormSection" class="hidden bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
+                    <form id="documentInForm" class="space-y-4">
+                        <input type="text" id="docTitle" placeholder="កម្មវត្តុ" required
+                            class="w-full px-3 py-2 border rounded dark:bg-gray-700 dark:text-white">
+                        <input type="text" id="submittedBy" placeholder="ឈ្មោះក្រុមហ៊ុន" required
+                            class="w-full px-3 py-2 border rounded dark:bg-gray-700 dark:text-white">
+
+                        <label>ឯកសារ</label>
+                        <input type="file" id="docFiles" accept=".pdf" multiple required
+                            class="w-full px-3 py-2 border rounded dark:bg-gray-700 dark:text-white">
+
+                        <label>ឯកសារយោង</label>
+                        <input type="file" id="refFiles" accept=".pdf" multiple
+                            class="w-full px-3 py-2 border rounded dark:bg-gray-700 dark:text-white">
+
+                        <textarea id="docNote" rows="3" placeholder="យោបល់បន្ថែម"
+                            class="w-full px-3 py-2 border rounded dark:bg-gray-700 dark:text-white"></textarea>
+
+                        <button type="submit"
+                            class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">រក្សាទុក</button>
+                    </form>
+                </div>
+
+                <!-- Table -->
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                    <h2 class="text-lg font-semibold mb-4">បញ្ជីឯកសារ​ដែលបានដាក់</h2>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full">
+                            <thead class="bg-gray-50 dark:bg-gray-700">
+                                <tr>
+                                    <th class="px-4 py-2">#</th>
+                                    <th class="px-4 py-2">កម្មវត្តុ</th>
+                                    <th class="px-4 py-2">ឈ្មោះក្រុមហ៊ុន</th>
+                                    <th class="px-4 py-2">ថ្ងៃ</th>
+                                    <th class="px-4 py-2">យោបល់បន្ថែម</th>
+                                    <th class="px-4 py-2">ប្រភេទ</th>
+                                    <th class="px-4 py-2">សកម្មភាព</th>
+                                </tr>
+                            </thead>
+                            <tbody id="documentInTable" class="divide-y dark:divide-gray-700">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Document Out View -->
+            <div id="document-out" class="view hidden p-4 md:p-6">
+                <h1 class="text-2xl font-bold mb-4">ឯកសារ-ចេញ</h1>
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full">
+                            <thead class="bg-gray-50 dark:bg-gray-700">
+                                <tr>
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                        Document ID
+                                    </th>
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                        Title
+                                    </th>
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                        Recipient
+                                    </th>
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                        Status
+                                    </th>
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                        Sent Date
+                                    </th>
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                        Action
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody id="documentsOutTable"
+                                class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                                <!-- Outgoing documents will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Other placeholder views -->
+            <div id="company-view" class="view hidden p-6">
+                <h1 class="text-2xl font-bold mb-4">ទិដ្ឋភាពក្រុមហ៊ុន</h1>
+                <p class="text-gray-600 dark:text-gray-400">
+                    ទិដ្ឋភាពករណីកណ្តាលក្នុងមួយក្រុមហ៊ុនដែលមានការគាំទ្រឯកសារភ្ជាប់
+                </p>
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mt-6">
+                    <p class="text-center text-gray-500">កម្មវិធីកំពុងអភិវឌ្ឍ...</p>
+                </div>
+            </div>
+
+            <div id="profile" class="view hidden p-6">
+                <h1 class="text-2xl font-bold mb-4">ប្រវត្តិរូប និងការកំណត់ផ្ទាល់ខ្លួន</h1>
+                <p class="text-gray-600 dark:text-gray-400">ពាក្យសម្ងាត់ ប្រតិទិន ការគ្រប់គ្រងការជូនដំណឹង</p>
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mt-6">
+                    <p class="text-center text-gray-500">កម្មវិធីកំពុងអភិវឌ្ឍ...</p>
+                </div>
+            </div>
+
+            <div id="access-control" class="view hidden p-6">
+                <h1 class="text-2xl font-bold mb-4">ការចូលប្រើការត្រួតពិនិត្យ និងសវនកម្ម</h1>
+                <p class="text-gray-600 dark:text-gray-400">RBAC ជាមួយនឹងការអនុញ្ញាតយ៉ាងល្អិតល្អន់
+                    និងដំណើរការសវនកម្មពេញលេញ</p>
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mt-6">
+                    <p class="text-center text-gray-500">កម្មវិធីកំពុងអភិវឌ្ឍ...</p>
+                </div>
+            </div>
+
+            <div id="inbox" class="view hidden p-6">
+                <h1 class="text-2xl font-bold mb-4">ការជូនដំណឹង</h1>
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <div class="lg:col-span-2">
+                            <div class="space-y-3" id="inboxTasks">
+                                <!-- Tasks will be populated by JavaScript -->
+                            </div>
+                        </div>
+                        <div>
+                            <div class="space-y-4" id="activityLog">
+                                <!-- Activity log will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="meeting-mgmt" class="view hidden p-6">
+                <h1 class="text-2xl font-bold mb-4">ការប្រជុំ</h1>
+
+                <!-- Meeting Rooms Display -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 border-l-4 border-green-500">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-lg font-semibold">បន្ទប់ប្រជុំ ៣A</h3>
+                            <span
+                                class="px-2 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 text-xs rounded-full">ទំនេរ</span>
+                        </div>
+                        <div class="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+                            <p><span class="font-medium">សមត្ថភាព:</span> ២០-៣០ នាក់</p>
+                            <p><span class="font-medium">អំណោយបរិក្ខារ:</span> អ្នកថត, WiFi, ទឺកសុទ្ធ</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 border-l-4 border-red-500">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-lg font-semibold">បន្ទប់ប្រជុំ B</h3>
+                            <span
+                                class="px-2 py-1 bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 text-xs rounded-full">កំពុងប្រើ</span>
+                        </div>
+                        <div class="space-y-2 text-sm text-gray-600 dark:text-gray-300 mb-4">
+                            <p><span class="font-medium">សមត្ថភាព:</span> ២០ នាក់</p>
+                            <p><span class="font-medium">អំណោយបរិក្ខារ:</span> ទូរទស្សន៍, WiFi, ក្តារសរសេរ,
+                                ប្រូយ៉េតកូ</p>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-700 rounded p-3 text-sm">
+                            <p class="font-medium">ការប្រជុំបច្ចុប្បន្ន:</p>
+                            <p class="text-gray-600 dark:text-gray-300">ការពិភាក្សាផែនការ Q4</p>
+                            <p class="text-gray-500 dark:text-gray-400">៩:០០ - ១១:០០ | គ្រូបង្រៀន: លោក សុខា</p>
+                            <p class="text-gray-500 dark:text-gray-400">អ្នកចូលរួម: ១៥ នាក់</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 border-l-4 border-yellow-500">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-lg font-semibold">បន្ទប់ប្រជុំ C</h3>
+                            <span
+                                class="px-2 py-1 bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 text-xs rounded-full">បានកក់</span>
+                        </div>
+                        <div class="space-y-2 text-sm text-gray-600 dark:text-gray-300 mb-4">
+                            <p><span class="font-medium">សមត្ថភាព:</span> ៨ នាក់</p>
+                            <p><span class="font-medium">អំណោយបរិក្ខារ:</span> ទូរទស្សន៍, WiFi</p>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-700 rounded p-3 text-sm">
+                            <p class="font-medium">ការប្រជុំបន្ទាប់:</p>
+                            <p class="text-gray-600 dark:text-gray-300">ការវាយតម្លៃគម្រោង</p>
+                            <p class="text-gray-500 dark:text-gray-400">១៤:០០ - ១៦:០០ | គ្រូបង្រៀន: លោកស្រី ចន្ទា
+                            </p>
+                            <p class="text-gray-500 dark:text-gray-400">អ្នកចូលរួម: ៦ នាក់</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Book Meeting Section -->
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                    <h2 class="text-xl font-semibold mb-6">កក់ការប្រជុំថ្មី</h2>
+
+                    <form id="meeting-form" class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">ចំណងជើងការប្រជុំ</label>
+                                <input type="text" id="meeting-title"
+                                    class="w-full px-4 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700"
+                                    placeholder="បញ្ចូលចំណងជើងការប្រជុំ">
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium mb-2">បន្ទប់ប្រជុំ</label>
+                                <select id="meeting-room"
+                                    class="w-full px-4 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700">
+                                    <option value="">ជ្រើសរើសបន្ទប់ប្រជុំ</option>
+                                    <option value="room-a">បន្ទប់ប្រជុំ ជាន់៣A (២០-៣០ នាក់)</option>
+                                    <option value="room-b">បន្ទប់ប្រជុំ ជាន់ទី១ (១០-២០ នាក់)</option>
+                                    <option value="room-c">បន្ទប់ប្រជុំ ជាន់ទី២ (៨-១០ នាក់)</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium mb-2">ថ្ងៃប្រជុំ</label>
+                                <input type="date" id="meeting-date"
+                                    class="w-full px-4 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700">
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium mb-2">ម៉ោងចាប់ផ្តើម</label>
+                                <input type="time" id="meeting-start"
+                                    class="w-full px-4 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700">
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium mb-2">ម៉ោងបញ្ចប់</label>
+                                <input type="time" id="meeting-end"
+                                    class="w-full px-4 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700">
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium mb-2">អ្នកដឹកនាំប្រជុំ</label>
+                                <input type="text" id="meeting-leader"
+                                    class="w-full px-4 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700"
+                                    placeholder="ឈ្មោះអ្នកដឹកនាំប្រជុំ">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium mb-2">អ្នកចូលរួម</label>
+                            <div class="flex items-center space-x-4 mb-4">
+                                <input type="email" id="participant-email"
+                                    class="flex-1 px-4 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700"
+                                    placeholder="បញ្ចូលអ៊ីមែលអ្នកចូលរួម">
+                                <button type="button" onclick="addParticipant()"
+                                    class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg">បន្ថែម</button>
+                            </div>
+                            <div id="participants-list" class="space-y-2"></div>
+                            <div id="participant-count" class="text-sm text-gray-500 mt-2">ចំនួនអ្នកចូលរួម: ០ នាក់
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium mb-2">បរិយាយលម្អិត</label>
+                            <textarea id="meeting-description" rows="4"
+                                class="w-full px-4 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700"
+                                placeholder="បរិយាយលម្អិតអំពីការប្រជុំ"></textarea>
+                        </div>
+
+                        <div class="flex justify-end space-x-4">
+                            <button type="button" onclick="resetForm()"
+                                class="px-6 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg">កំណត់ឡើងវិញ</button>
+                            <button type="submit"
+                                class="px-6 py-2 bg-[#5D5CDE] hover:bg-[#4D4CBE] text-white rounded-lg">ដាក់ស្នើកក់ការប្រជុំ</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Pending Approvals -->
+                <div id="pending-approvals" class="mt-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 hidden">
+                    <h2 class="text-xl font-semibold mb-6 flex items-center">
+                        <svg class="w-5 h-5 mr-2 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                        រងចាំការយល់ព្រម
+                    </h2>
+                    <div id="pending-list"></div>
+                </div>
+
+                <!-- Approved Meetings -->
+                <div id="approved-meetings" class="mt-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 hidden">
+                    <h2 class="text-xl font-semibold mb-6 flex items-center">
+                        <svg class="w-5 h-5 mr-2 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                        ការប្រជុំដែលបានអនុម័ត
+                    </h2>
+                    <div id="approved-list"></div>
+                </div>
+            </div>
+
+
+
+            <!-- Modal -->
+            <div id="meetingModal"
+                class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center hidden z-50">
+                <div class="bg-white dark:bg-gray-900 p-6 rounded shadow-md w-full max-w-xl">
+                    <h2 class="text-xl font-semibold mb-4">បញ្ចូលព័ត៌មានប្រជុំ</h2>
+                    <form id="meetingForm" class="space-y-4">
+                        <input type="text" id="meetingTitle" required placeholder="ចំណងជើង"
+                            class="w-full border p-2 rounded">
+                        <input type="datetime-local" id="meetingDate" required class="w-full border p-2 rounded">
+                        <input type="text" id="meetingRoom" required placeholder="បន្ទប់"
+                            class="w-full border p-2 rounded">
+                        <input type="text" id="meetingOrganizer" required placeholder="អ្នករៀបចំ"
+                            class="w-full border p-2 rounded">
+                        <textarea id="meetingNote" rows="3" placeholder="សេចក្តីអធិប្បាយ"
+                            class="w-full border p-2 rounded"></textarea>
+
+                        <div class="flex justify-end space-x-2">
+                            <button type="button" onclick="closeMeetingModal()"
+                                class="px-4 py-2 bg-gray-300 rounded">បោះបង់</button>
+                            <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded">រក្សាទុក</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+
+            <div id="statistics" class="view hidden p-6">
+                <div class="mb-6">
+                    <h1 class="text-2xl font-bold">ស្ថិតិ និងរបាយការណ៍</h1>
+                    <p class="text-gray-600 dark:text-gray-400">របាយការណ៍អំពីឯកសារ ស្ថានភាពករណី និងកម្មវិធី</p>
+                </div>
+
+                <!-- Report Generation -->
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
+                    <h3 class="text-lg font-semibold mb-4">បង្កើតរបាយការណ៍</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">រាយការណ៍ប្រភេទ</label>
+                            <select
+                                class="w-full border dark:border-gray-600 rounded-md px-3 py-2 text-base bg-white dark:bg-gray-700">
+                                <option>របាយការណ៍ស្ថានភាពឯកសារ</option>
+                                <option>របាយការណ៍វឌ្ឍនភាពករណី</option>
+                                <option>សង្ខេបកម្មវិធី</option>
+                                <option>របាយការណ៍សកម្មភាពអ្នកប្រើប្រាស់</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">កាលបរិច្ឆេទ</label>
+                            <select
+                                class="w-full border dark:border-gray-600 rounded-md px-3 py-2 text-base bg-white dark:bg-gray-700">
+                                <option>3 ថ្ងៃចុងក្រោយ</option>
+                                <option>7 ថ្ងៃចុងក្រោយ</option>
+                                <option>10 ថ្ងៃចុងក្រោយ</option>
+                                <option>ជួរផ្ទាល់ខ្លួន</option>
+                            </select>
+                        </div>
+                        <div class="flex items-end">
+                            <button class="w-full bg-primary hover:bg-primary-dark text-white py-2 px-4 rounded-md">
+                                <i class="fas fa-chart-line mr-2"></i>បង្កើតរបាយការណ៍
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Statistics Charts -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Document Status Chart -->
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                        <h3 class="text-lg font-semibold mb-4">ការចែកចាយស្ថានភាពឯកសារ</h3>
+                        <div
+                            class="h-64 flex items-center justify-center border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg">
+                            <div class="text-center">
+                                <i class="fas fa-chart-pie text-4xl text-gray-400 mb-2"></i>
+                                <p class="text-gray-500">ក្រាបនឹងត្រូវបានបង្ហាញនៅទីនេះ</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Application Trends -->
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                        <h3 class="text-lg font-semibold mb-4">និន្នាការកម្មវិធី</h3>
+                        <div
+                            class="h-64 flex items-center justify-center border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg">
+                            <div class="text-center">
+                                <i class="fas fa-chart-line text-4xl text-gray-400 mb-2"></i>
+                                <p class="text-gray-500">គំនូសតាងនឹងត្រូវបានបង្ហាញនៅទីនេះ</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Attendance and Leave Request placeholder views -->
+            <div id="attendance" class="view hidden p-6">
+                <h1 class="text-2xl font-bold mb-4">អវត្តមាន</h1>
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                    <p class="text-center text-gray-500">កម្មវិធីកំពុងអភិវឌ្ឍ...</p>
+                </div>
+            </div>
+
+            <div id="leaveRequests" class="view hidden p-6">
+                <h1 class="text-2xl font-bold mb-4">ការសុំច្បាប់</h1>
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                    <p class="text-center text-gray-500">កម្មវិធីកំពុងអភិវឌ្ឍ...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <!-- Add User Modal -->
+    <div id="addUserModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md mx-4">
+            <h3 class="text-lg font-semibold mb-4">Add New User</h3>
+            <form id="addUserForm">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">User Type</label>
+                        <select
+                            class="w-full border dark:border-gray-600 rounded-md px-3 py-2 text-base bg-white dark:bg-gray-700"
+                            required>
+                            <option value="">Select Type</option>
+                            <option value="serc">SERC User</option>
+                            <option value="company">Company User</option>
+                            <option value="public">Public User</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Full Name</label>
+                        <input type="text"
+                            class="w-full border dark:border-gray-600 rounded-md px-3 py-2 text-base bg-white dark:bg-gray-700"
+                            required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Email</label>
+                        <input type="email"
+                            class="w-full border dark:border-gray-600 rounded-md px-3 py-2 text-base bg-white dark:bg-gray-700"
+                            required>
+                    </div>
+                </div>
+                <div class="flex justify-end space-x-3 mt-6">
+                    <button type="button" onclick="hideAddUserModal()"
+                        class="px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200">Cancel</button>
+                    <button type="submit" class="bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-md">Add
+                        User</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Create Case Modal -->
+    <div id="createCaseModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md mx-4">
+            <h3 class="text-lg font-semibold mb-4">បង្កើតករណីថ្មី។</h3>
+            <form id="createCaseForm">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">ប្រភេទករណី</label>
+                        <select
+                            class="w-full border dark:border-gray-600 rounded-md px-3 py-2 text-base bg-white dark:bg-gray-700"
+                            required>
+                            <option value="">ជ្រើសរើសប្រភេទ</option>
+                            <option value="internal">ផ្ទៃក្នុង</option>
+                            <option value="external">ខាងក្រៅ</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">ចំណងជើងករណី</label>
+                        <input type="text"
+                            class="w-full border dark:border-gray-600 rounded-md px-3 py-2 text-base bg-white dark:bg-gray-700"
+                            required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">ការពិពណ៌នា</label>
+                        <textarea
+                            class="w-full border dark:border-gray-600 rounded-md px-3 py-2 text-base bg-white dark:bg-gray-700"
+                            rows="3" required></textarea>
+                    </div>
+                </div>
+                <div class="flex justify-end space-x-3 mt-6">
+                    <button type="button" onclick="hideCreateCaseModal()"
+                        class="px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200">បោះបង់</button>
+                    <button type="submit"
+                        class="bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-md">បង្កើតករណី</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

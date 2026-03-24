@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SERC E-Flow Login</title>
+    <link rel="stylesheet" href="logo.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Siemreap&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="topbar">
+            <div class="logo-group">
+                <div class="logo-circle">
+                    <img src="logo_serc.png" alt="SERC">
+                </div>
+                <div class="logo-circle">MEF</div>
+                <div class="logo-circle">MISTI</div>
+                <div class="logo-circle">SERC</div>
+            </div>
+        </header>
+
+        <main class="hero">
+            <section class="hero-left">
+                <div>
+                    <h1>ប្រព័ន្ធគ្រប់គ្រងលំហូរឯកសារ និងអនុម័តឌីជីថល</h1>
+                    <p>
+                        ចូលប្រើប្រព័ន្ធដើម្បីដាក់សំណើ ត្រួតពិនិត្យ អនុម័ត និងតាមដានឯកសារបានយ៉ាងងាយស្រួល។
+                    </p>
+                </div>
+
+                <div class="browser-shell">
+                    <div class="browser-inner">
+                        <div class="browser-dots">
+                            <span class="dot-red"></span>
+                            <span class="dot-yellow"></span>
+                            <span class="dot-green"></span>
+                        </div>
+                        <div class="browser-content">
+                            <div class="search-demo"></div>
+                            <div class="card-grid">
+                                <div class="mini-card"><div class="mini-icon"></div><div class="mini-line short"></div><div class="mini-line"></div></div>
+                                <div class="mini-card"><div class="mini-icon"></div><div class="mini-line short"></div><div class="mini-line"></div></div>
+                                <div class="mini-card"><div class="mini-icon"></div><div class="mini-line short"></div><div class="mini-line"></div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="hero-right">
+                <div class="login-card">
+                    <div class="login-header">
+                        <div>
+                            <p>SERC E-Flow</p>
+                            <h2>ចូលប្រើប្រព័ន្ធ</h2>
+                        </div>
+                        <div class="lang-switch">
+                            <button type="button">ខ្មែរ</button>
+                            <button type="button">EN</button>
+                        </div>
+                    </div>
+
+                    <button class="digital-btn" type="button" onclick="window.location.href='Camdigikey.html'">
+                        <span class="digital-icon">ID</span>
+                        <span id="digitalText">ចូលជាមួយ CamDigiKey</span>
+                    </button>
+
+                    <div class="divider"><span>ឬ ចូលដោយគណនីប្រព័ន្ធ</span></div>
+
+                    <form id="loginForm">
+                        <div class="form-group">
+                            <label for="username" id="labelUsername">អ៊ីមែល ឬ ឈ្មោះអ្នកប្រើ</label>
+                            <input id="username" type="text" placeholder="បញ្ចូលអ៊ីមែល ឬ username" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password" id="labelPassword">ពាក្យសម្ងាត់</label>
+                            <input id="password" type="password" placeholder="បញ្ចូលពាក្យសម្ងាត់" />
+                        </div>
+
+                        <div class="form-row">
+                            <div class="remember-wrap">
+                                <input class="remember-input" id="remember" type="checkbox" />
+                                <label class="remember-label" for="remember">ចងចាំខ្ញុំ</label>
+                            </div>
+                            <a class="forgot" href="forget_pw.html">ភ្លេចពាក្យសម្ងាត់?</a>
+                        </div>
+
+                        <p id="errorMsg" style="color:red; display:none; margin-top:10px;"></p>
+                        <button class="submit-btn" id="submitBtn" type="submit">ចូលប្រើប្រព័ន្ធ</button>
+                    </form>
+
+                    <div class="note-box">
+                        <strong>សម្គាល់:</strong>
+                        <span id="noteText">សម្រាប់ហត្ថលេខាឌីជីថល និងសុវត្ថិភាពខ្ពស់ សូមប្រើ CamDigiKey។</span>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="auth.js"></script>
+    <script>
+        const translations = {
+            km: {
+                title: "ប្រព័ន្ធគ្រប់គ្រងលំហូរឯកសារ និងអនុម័តឌីជីថល",
+                desc: "ចូលប្រើប្រព័ន្ធដើម្បីដាក់សំណើ ត្រួតពិនិត្យ អនុម័ត និងតាមដានឯកសារបានយ៉ាងងាយស្រួល។",
+                login: "ចូលប្រើប្រព័ន្ធ",
+                email: "អ៊ីមែល ឬ ឈ្មោះអ្នកប្រើ",
+                emailPlaceholder: "បញ្ចូលអ៊ីមែល ឬ username",
+                password: "ពាក្យសម្ងាត់",
+                passwordPlaceholder: "បញ្ចូលពាក្យសម្ងាត់",
+                remember: "ចងចាំខ្ញុំ",
+                forgot: "ភ្លេចពាក្យសម្ងាត់?",
+                submit: "ចូលប្រើប្រព័ន្ធ",
+                digital: "ចូលជាមួយ CamDigiKey",
+                or: "ឬ ចូលដោយគណនីប្រព័ន្ធ",
+                note: "សម្រាប់ហត្ថលេខាឌីជីថល និងសុវត្ថិភាពខ្ពស់ សូមប្រើ CamDigiKey។",
+                error: "❌ គណនី ឬពាក្យសម្ងាត់មិនត្រឹមត្រូវ",
+                empty: "❌ សូមបំពេញព័ត៌មានទាំងអស់"
+            },
+            en: {
+                title: "Digital Document Workflow & Approval System",
+                desc: "Access the system to submit, review, approve, and track documents easily.",
+                login: "Login",
+                email: "Email or Username",
+                emailPlaceholder: "Enter email or username",
+                password: "Password",
+                passwordPlaceholder: "Enter password",
+                remember: "Remember me",
+                forgot: "Forgot password?",
+                submit: "Login",
+                digital: "Login with CamDigiKey",
+                or: "Or login with system account",
+                note: "For secure digital signature, please use CamDigiKey.",
+                error: "❌ Invalid username or password",
+                empty: "❌ Please fill in all fields"
+            }
+        };
+
+        let currentLang = "km";
+
+        function switchLang(lang) {
+            currentLang = lang;
+            document.querySelector("h1").innerText = translations[lang].title;
+            document.querySelector(".hero-left p").innerText = translations[lang].desc;
+            document.querySelector(".login-header h2").innerText = translations[lang].login;
+            document.getElementById("labelUsername").innerText = translations[lang].email;
+            document.getElementById("username").placeholder = translations[lang].emailPlaceholder;
+            document.getElementById("labelPassword").innerText = translations[lang].password;
+            document.getElementById("password").placeholder = translations[lang].passwordPlaceholder;
+            document.querySelector(".remember-label").innerText = translations[lang].remember;
+            document.querySelector(".forgot").innerText = translations[lang].forgot;
+            document.getElementById("digitalText").innerText = translations[lang].digital;
+            document.querySelector(".divider span").innerText = translations[lang].or;
+            document.getElementById("submitBtn").innerText = translations[lang].submit;
+            document.getElementById("noteText").innerText = translations[lang].note;
+            if (document.getElementById('errorMsg').style.display === 'block') {
+                document.getElementById('errorMsg').innerText = translations[lang].error;
+            }
+        }
+
+        document.querySelectorAll(".lang-switch button")[0].onclick = () => switchLang("km");
+        document.querySelectorAll(".lang-switch button")[1].onclick = () => switchLang("en");
+
+        window.onload = function () {
+            const savedUsername = localStorage.getItem("rememberedUsername");
+            if (savedUsername) {
+                document.getElementById("username").value = savedUsername;
+                document.getElementById("remember").checked = true;
+            }
+            logoutUser();
+        };
+
+        document.getElementById("loginForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+            const username = document.getElementById("username").value.trim();
+            const password = document.getElementById("password").value.trim();
+            const remember = document.getElementById("remember").checked;
+            const errorMsg = document.getElementById("errorMsg");
+
+            if (username === "" || password === "") {
+                errorMsg.innerText = translations[currentLang].empty;
+                errorMsg.style.display = "block";
+                return;
+            }
+
+            if (loginUser(username, password)) {
+                if (remember) {
+                    localStorage.setItem("rememberedUsername", username);
+                } else {
+                    localStorage.removeItem("rememberedUsername");
+                }
+                window.location.href = "E-flow-updated.html";
+            } else {
+                errorMsg.innerText = translations[currentLang].error;
+                errorMsg.style.display = "block";
+            }
+        });
+    </script>
+</body>
+</html>

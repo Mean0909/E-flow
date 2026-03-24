@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="km" class="h-full">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SERC e-Flow Management System</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Siemreap&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+
+  <style>
+    :root {
+      --gov-navy: #0b2a57;
+      --gov-blue: #153e75;
+      --gov-blue-soft: #1d4f95;
+      --gov-gold: #d4a017;
+      --gov-sky: #eef4fb;
+      --gov-border: #d9e3f0;
+    }
+
+    html,
+    body {
+      height: 100%;
+    }
+
+    body {
+      margin: 0;
+      overflow: hidden;
+      font-family: 'Inter', 'Siemreap', sans-serif;
+      background: linear-gradient(180deg, #edf3f9 0%, #e8eef6 100%);
+      color: #1e293b;
+    }
+
+    html[lang='km'] body {
+      font-family: 'Siemreap', 'Inter', sans-serif;
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.97);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.75);
+      box-shadow: 0 10px 30px rgba(15, 43, 91, 0.08);
+    }
+
+    .gov-gradient {
+      background: linear-gradient(180deg, var(--gov-navy) 0%, var(--gov-blue) 100%);
+    }
+
+    .gold-gradient {
+      background: linear-gradient(135deg, #e6bb32, var(--gov-gold));
+    }
+
+    .sidebar-scroll,
+    .content-scroll {
+      scrollbar-width: thin;
+      scrollbar-color: #8ea7c7 transparent;
+    }
+
+    .sidebar-scroll::-webkit-scrollbar,
+    .content-scroll::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    .sidebar-scroll::-webkit-scrollbar-thumb,
+    .content-scroll::-webkit-scrollbar-thumb {
+      background: #8ea7c7;
+      border-radius: 999px;
+    }
+
+    .nav-item {
+      color: rgba(255, 255, 255, 0.92);
+      border: 1px solid transparent;
+      font-weight: 500;
+    }
+
+    .nav-item:hover {
+      background: rgba(255, 255, 255, 0.10);
+      border-color: rgba(255, 255, 255, 0.08);
+    }
+
+    .nav-item.active {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.08));
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.10);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .06);
+    }
+
+    .nav-item.active i {
+      color: #f4d26a;
+    }
+
+    .sidebar-logout {
+      color: #ffe3e3;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(220, 38, 38, 0.12);
+    }
+
+    .sidebar-logout:hover {
+      background: rgba(220, 38, 38, 0.22);
+    }
+
+    .topbar-btn {
+      transition: all .2s ease;
+    }
+
+    .topbar-btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .section-title {
+      color: #0f172a;
+      letter-spacing: -0.01em;
+    }
+
+    .table-shell table tbody tr:hover {
+      background: #f8fbff;
+    }
+
+    .table-shell thead th {
+      font-weight: 700;
+      color: #334155;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .table-shell tbody td {
+      border-bottom: 1px solid #edf2f7;
+    }
+
+    .modal-backdrop {
+      background: rgba(15, 23, 42, .58);
+      backdrop-filter: blur(2px);
+    }
+
+    .gov-badge {
+      background: rgba(244, 210, 106, 0.16);
+      color: #ffe082;
+    }
+
+    .brand-wrap {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .brand-wrap::after {
+      content: "";
+      position: absolute;
+      inset: auto -40px -40px auto;
+      width: 120px;
+      height: 120px;
+      background: radial-gradient(circle, rgba(255, 255, 255, .12), transparent 65%);
+      pointer-events: none;
+    }
+  </style>
+
+  <script src="E-flow-updated.js" defer></script>
+</head>
+
+<body class="text-slate-800">
+  <div class="flex h-full">
+    <!-- Sidebar -->
+    <aside class="gov-gradient text-white w-72 flex-shrink-0 hidden lg:flex flex-col shadow-2xl">
+      <div class="brand-wrap px-5 py-5 border-b border-white/10">
+        <div class="flex items-center gap-3">
+          <div
+            class="w-16 h-13 rounded-2xl bg-white shadow-md border border-white/20 flex items-center justify-center overflow-hidden">
+            <img src="logo_serc.png" alt="SERC Logo" class="w-12 h-12 object-contain">
+          </div>
+          <div class="min-w-0">
+            <h1 class="text-lg leading-7 font-bold tracking-tight" data-i18n="brandTitle">ប្រព័ន្ធគ្រប់គ្រងឯកសារ</h1>
+            <p class="text-sm text-blue-100 leading-5" data-i18n="brandSub">SERC e-Flow Management System</p>
+          </div>
+        </div>
+      </div>
+
+      <nav id="sidebarNav" class="sidebar-scroll flex-1 overflow-y-auto px-4 py-4 space-y-2">
+        <button class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-left transition"
+          data-view="dashboard">
+          <i class="fa-solid fa-gauge-high w-5 text-center"></i>
+          <span data-i18n="navDashboard">ផ្ទាំងប្រតិបត្តិការ</span>
+        </button>
+
+        <button class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-left transition"
+          data-view="request-form">
+          <i class="fa-solid fa-file-lines w-5 text-center"></i>
+          <span data-i18n="navRequestForm">ការស្នើរសុំ</span>
+        </button>
+
+        <button class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-left transition"
+          data-view="user-mgmt">
+          <i class="fa-solid fa-users w-5 text-center"></i>
+          <span data-i18n="navUsers">ការគ្រប់គ្រងអ្នកប្រើប្រាស់</span>
+        </button>
+
+        <button class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-left transition"
+          data-view="case-mgmt">
+          <i class="fa-solid fa-folder-tree w-5 text-center"></i>
+          <span data-i18n="navCases">ការគ្រប់គ្រងករណី</span>
+        </button>
+
+        <button class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-left transition"
+          data-view="application-mgmt">
+          <i class="fa-solid fa-file-signature w-5 text-center"></i>
+          <span data-i18n="navApplications">ការគ្រប់គ្រងពាក្យស្នើសុំ</span>
+        </button>
+
+        <button class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-left transition"
+          data-view="document-in">
+          <i class="fa-solid fa-file-arrow-up w-5 text-center"></i>
+          <span data-i18n="navDocumentIn">ឯកសារ-ចូល</span>
+        </button>
+
+        <button class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-left transition"
+          data-view="document-out">
+          <i class="fa-solid fa-file-arrow-down w-5 text-center"></i>
+          <span data-i18n="navDocumentOut">ឯកសារ-ចេញ</span>
+        </button>
+
+        <button class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-left transition"
+          data-view="review-process">
+          <i class="fa-solid fa-list-check w-5 text-center"></i>
+          <span data-i18n="navReview">ដំណើរការត្រួតពិនិត្យ</span>
+        </button>
+
+        <button class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-left transition"
+          data-view="meeting-mgmt">
+          <i class="fa-solid fa-calendar-days w-5 text-center"></i>
+          <span data-i18n="navMeeting">ការប្រជុំ</span>
+        </button>
+
+        <button class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-left transition"
+          data-view="statistics">
+          <i class="fa-solid fa-chart-column w-5 text-center"></i>
+          <span data-i18n="navStatistics">ស្ថិតិ</span>
+        </button>
+
+        <button class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-left transition"
+          data-view="settings">
+          <i class="fa-solid fa-gear w-5 text-center"></i>
+          <span data-i18n="navSettings">ការកំណត់</span>
+        </button>
+
+        <div class="pt-2 mt-2 border-t border-white/10">
+          <button id="sidebarLogoutBtn"
+            class="sidebar-logout w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-left transition">
+            <i class="fa-solid fa-right-from-bracket w-5 text-center"></i>
+            <span data-i18n="logout">ចាកចេញ</span>
+          </button>
+        </div>
+      </nav>
+
+      <div class="p-4 border-t border-white/10">
+        <div class="rounded-3xl bg-white/10 p-4 text-sm shadow-inner">
+          <div class="flex items-center justify-between mb-2">
+            <span class="font-medium" data-i18n="phaseLabel">ដំណាក់កាល</span>
+            <span class="gov-badge px-3 py-1 rounded-full text-xs font-semibold">2026</span>
+          </div>
+          <p class="text-blue-100 leading-6" data-i18n="phaseDesc">
+            ប្រព័ន្ធជំនាន់ថ្មី មានទាំង KH / EN និងរក្សាទុកទិន្នន័យក្នុង browser
+          </p>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="flex-1 min-w-0 flex flex-col">
+      <header
+        class="bg-white/95 backdrop-blur border-b border-slate-200 px-4 md:px-6 py-4 flex items-center gap-4 justify-between shadow-sm">
+        <div class="flex items-center gap-3 min-w-0">
+          <button id="mobileMenuBtn"
+            class="lg:hidden w-10 h-10 rounded-xl border border-slate-200 bg-slate-50 topbar-btn">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <div class="min-w-0">
+            <h2 id="pageTitle" class="text-2xl md:text-3xl font-bold truncate text-slate-800">Dashboard</h2>
+            <p id="pageSubtitle" class="text-sm md:text-base text-slate-500 truncate">Track and manage all workflows</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <div
+            class="hidden md:flex items-center rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 w-80 shadow-sm">
+            <i class="fa-solid fa-magnifying-glass text-slate-400 mr-2"></i>
+            <input id="globalSearch" type="text" class="bg-transparent outline-none w-full text-sm"
+              placeholder="Search..." data-i18n-placeholder="searchPlaceholder">
+          </div>
+
+          <div class="flex rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+            <button class="lang-btn px-4 py-2.5 text-sm bg-[var(--gov-blue)] text-white font-medium"
+              data-lang="km">KH</button>
+            <button class="lang-btn px-4 py-2.5 text-sm bg-white text-slate-700 font-medium" data-lang="en">EN</button>
+          </div>
+
+          <button id="themeToggle"
+            class="topbar-btn w-11 h-11 rounded-2xl border border-slate-200 bg-white shadow-sm hover:bg-slate-50">
+            <i class="fa-regular fa-moon"></i>
+          </button>
+
+          <button id="topLogoutBtn"
+            class="topbar-btn px-4 h-11 rounded-2xl border border-red-200 bg-red-50 text-red-700 hover:bg-red-100 shadow-sm flex items-center gap-2 font-medium">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <span data-i18n="logout">ចាកចេញ</span>
+          </button>
+        </div>
+      </header>
+
+      <div class="content-scroll flex-1 overflow-y-auto p-4 md:p-6">
+        <div id="mobileSidebar" class="hidden lg:hidden mb-4 rounded-3xl gov-gradient text-white p-4 shadow-xl">
+          <div class="grid grid-cols-2 gap-2" id="mobileNavGrid"></div>
+        </div>
+
+        <!-- Dashboard -->
+        <section id="dashboard" class="view space-y-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
+            <div class="glass-card rounded-3xl p-5">
+              <div class="flex items-start justify-between">
+                <div>
+                  <p class="text-sm text-slate-500" data-i18n="kpiUsers">អ្នកប្រើប្រាស់សរុប</p>
+                  <h3 id="kpiUsers" class="text-4xl font-bold mt-2 text-slate-800">0</h3>
+                </div>
+                <div class="w-12 h-12 rounded-2xl bg-blue-100 text-blue-700 flex items-center justify-center">
+                  <i class="fa-solid fa-users"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="glass-card rounded-3xl p-5">
+              <div class="flex items-start justify-between">
+                <div>
+                  <p class="text-sm text-slate-500" data-i18n="kpiCases">ករណីសរុប</p>
+                  <h3 id="kpiCases" class="text-4xl font-bold mt-2 text-slate-800">0</h3>
+                </div>
+                <div class="w-12 h-12 rounded-2xl bg-indigo-100 text-indigo-700 flex items-center justify-center">
+                  <i class="fa-solid fa-folder-tree"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="glass-card rounded-3xl p-5">
+              <div class="flex items-start justify-between">
+                <div>
+                  <p class="text-sm text-slate-500" data-i18n="kpiApplications">ពាក្យស្នើសុំ</p>
+                  <h3 id="kpiApplications" class="text-4xl font-bold mt-2 text-slate-800">0</h3>
+                </div>
+                <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center">
+                  <i class="fa-solid fa-file-signature"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="glass-card rounded-3xl p-5">
+              <div class="flex items-start justify-between">
+                <div>
+                  <p class="text-sm text-slate-500" data-i18n="kpiPending">រង់ចាំពិនិត្យ</p>
+                  <h3 id="kpiPending" class="text-4xl font-bold mt-2 text-slate-800">0</h3>
+                </div>
+                <div class="w-12 h-12 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center">
+                  <i class="fa-solid fa-hourglass-half"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+            <div class="xl:col-span-2 glass-card rounded-3xl p-6">
+              <div class="flex items-center justify-between mb-5">
+                <div>
+                  <h3 class="section-title text-xl font-bold" data-i18n="dashboardOverview">សង្ខេបទូទៅប្រព័ន្ធ</h3>
+                  <p class="text-sm text-slate-500 mt-1" data-i18n="dashboardDesc">
+                    ទិន្នន័យសំខាន់ៗសម្រាប់ការតាមដានប្រតិបត្តិការ
+                  </p>
+                </div>
+                <button class="px-4 py-2.5 rounded-2xl gold-gradient text-white text-sm font-semibold shadow-sm"
+                  onclick="app.seedDemoData()" data-i18n="loadDemoData">
+                  បញ្ចូលទិន្នន័យគំរូ
+                </button>
+              </div>
+
+              <div class="grid md:grid-cols-3 gap-4">
+                <div class="rounded-2xl bg-slate-50 border border-slate-200 p-4">
+                  <p class="text-sm text-slate-500" data-i18n="approvedCount">បានអនុម័ត</p>
+                  <p id="approvedCount" class="text-3xl font-bold mt-1 text-slate-800">0</p>
+                </div>
+                <div class="rounded-2xl bg-slate-50 border border-slate-200 p-4">
+                  <p class="text-sm text-slate-500" data-i18n="inProgressCount">កំពុងដំណើរការ</p>
+                  <p id="inProgressCount" class="text-3xl font-bold mt-1 text-slate-800">0</p>
+                </div>
+                <div class="rounded-2xl bg-slate-50 border border-slate-200 p-4">
+                  <p class="text-sm text-slate-500" data-i18n="meetingCount">ការប្រជុំ</p>
+                  <p id="meetingCount" class="text-3xl font-bold mt-1 text-slate-800">0</p>
+                </div>
+              </div>
+
+              <div class="mt-5 grid md:grid-cols-2 gap-4">
+                <button onclick="app.openModal('user')"
+                  class="rounded-2xl border border-blue-200 bg-blue-50 p-4 text-left hover:bg-blue-100 transition">
+                  <div class="font-semibold text-slate-800" data-i18n="quickAddUser">បន្ថែមអ្នកប្រើប្រាស់ថ្មី</div>
+                  <div class="text-sm text-slate-500 mt-1" data-i18n="quickAddUserSub">
+                    Create new internal, company, or public account
+                  </div>
+                </button>
+
+                <button onclick="app.openModal('application')"
+                  class="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-left hover:bg-emerald-100 transition">
+                  <div class="font-semibold text-slate-800" data-i18n="quickAddApplication">បង្កើតពាក្យស្នើសុំ</div>
+                  <div class="text-sm text-slate-500 mt-1" data-i18n="quickAddApplicationSub">
+                    Add a new license, certificate, or update request
+                  </div>
+                </button>
+              </div>
+            </div>
+
+            <div class="glass-card rounded-3xl p-5">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="section-title text-lg font-bold" data-i18n="recentActivity">សកម្មភាពថ្មីៗ</h3>
+                <span class="text-xs bg-slate-100 rounded-full px-3 py-1 font-medium" id="activityCounter">0</span>
+              </div>
+              <div id="recentActivityList" class="space-y-3"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- form -->
+        <section id="request-form" class="view hidden space-y-5">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <h3 class="section-title text-2xl font-bold" data-i18n="requestFormTitle">ការស្នើរសុំ</h3>
+              <p class="text-sm text-slate-500 mt-1" data-i18n="requestFormSub">
+                ទម្រង់ស្នើរសុំសម្រាប់អ្នកប្រើប្រាស់
+              </p>
+            </div>
+            <button onclick="app.openModal('request-form')"
+              class="px-4 py-2.5 rounded-2xl gov-gradient text-white font-medium shadow-sm">
+              <i class="fa-solid fa-plus mr-2"></i>
+              <span data-i18n="addRequestForm">បន្ថែមទម្រង់</span>
+            </button>
+          </div>
+
+          <div class="grid md:grid-cols-3 gap-5">
+            <div class="glass-card rounded-3xl p-5 text-center">
+              <img src="https://cdn-icons-png.flaticon.com/512/942/942748.png" alt=""
+                class="w-28 h-28 object-contain mx-auto mb-4">
+              <h4 class="font-bold text-lg" data-i18n="requestCard1">ស្នើរសុំថ្មី</h4>
+              <p class="text-sm text-slate-500 mt-2" data-i18n="requestCard1Sub">បង្កើតពាក្យស្នើរសុំថ្មី</p>
+            </div>
+
+            <div class="glass-card rounded-3xl p-5 text-center">
+              <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt=""
+                class="w-28 h-28 object-contain mx-auto mb-4">
+              <h4 class="font-bold text-lg" data-i18n="requestCard2">បំពេញឯកសារ</h4>
+              <p class="text-sm text-slate-500 mt-2" data-i18n="requestCard2Sub">បញ្ចូលព័ត៌មានសម្រាប់សំណើ</p>
+            </div>
+
+            <div class="glass-card rounded-3xl p-5 text-center">
+              <img src="https://cdn-icons-png.flaticon.com/512/9093/9093143.png" alt=""
+                class="w-28 h-28 object-contain mx-auto mb-4">
+              <h4 class="font-bold text-lg" data-i18n="requestCard3">តាមដានស្ថានភាព</h4>
+              <p class="text-sm text-slate-500 mt-2" data-i18n="requestCard3Sub">មើលស្ថានភាពនៃការស្នើរសុំ</p>
+            </div>
+          </div>
+
+          <div class="glass-card rounded-3xl p-5 overflow-x-auto table-shell">
+            <table class="min-w-full text-sm">
+              <thead class="text-left bg-slate-50">
+                <tr>
+                  <th class="px-4 py-3 rounded-tl-2xl">ID</th>
+                  <th class="px-4 py-3" data-i18n="thTitle">ចំណងជើង</th>
+                  <th class="px-4 py-3" data-i18n="thName">ឈ្មោះ</th>
+                  <th class="px-4 py-3" data-i18n="thStatus">ស្ថានភាព</th>
+                  <th class="px-4 py-3 rounded-tr-2xl" data-i18n="thAction">សកម្មភាព</th>
+                </tr>
+              </thead>
+              <tbody id="requestFormTable"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- User Management -->
+        <section id="user-mgmt" class="view hidden space-y-5">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <h3 class="section-title text-2xl font-bold" data-i18n="userManagement">ការគ្រប់គ្រងអ្នកប្រើប្រាស់</h3>
+              <p class="text-sm text-slate-500 mt-1" data-i18n="userManagementSub">
+                បង្កើត កែប្រែ លុប និងស្វែងរកអ្នកប្រើប្រាស់
+              </p>
+            </div>
+            <button onclick="app.openModal('user')"
+              class="px-4 py-2.5 rounded-2xl gov-gradient text-white font-medium shadow-sm">
+              <i class="fa-solid fa-plus mr-2"></i>
+              <span data-i18n="addUser">បន្ថែមអ្នកប្រើប្រាស់</span>
+            </button>
+          </div>
+
+          <div class="glass-card rounded-3xl p-5 table-shell">
+            <div class="flex flex-col md:flex-row gap-3 mb-4">
+              <input id="userSearch" class="flex-1 rounded-2xl border border-slate-200 px-4 py-3"
+                placeholder="Search users..." data-i18n-placeholder="searchUsers">
+              <select id="userTypeFilter" class="rounded-2xl border border-slate-200 px-4 py-3 min-w-56 bg-white">
+                <option value="all" data-i18n="allTypes">ប្រភេទទាំងអស់</option>
+                <option value="SERC User">SERC User</option>
+                <option value="Company User">Company User</option>
+                <option value="Public User">Public User</option>
+              </select>
+            </div>
+
+            <div class="overflow-x-auto">
+              <table class="min-w-full text-sm">
+                <thead class="text-left bg-slate-50">
+                  <tr>
+                    <th class="px-4 py-3 rounded-tl-2xl" data-i18n="thName">ឈ្មោះ</th>
+                    <th class="px-4 py-3" data-i18n="thEmail">អ៊ីមែល</th>
+                    <th class="px-4 py-3" data-i18n="thType">ប្រភេទ</th>
+                    <th class="px-4 py-3" data-i18n="thStatus">ស្ថានភាព</th>
+                    <th class="px-4 py-3 rounded-tr-2xl" data-i18n="thAction">សកម្មភាព</th>
+                  </tr>
+                </thead>
+                <tbody id="usersTable"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- Case Management -->
+        <section id="case-mgmt" class="view hidden space-y-5">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <h3 class="section-title text-2xl font-bold" data-i18n="caseManagement">ការគ្រប់គ្រងករណី</h3>
+              <p class="text-sm text-slate-500 mt-1" data-i18n="caseManagementSub">បង្កើតលេខករណី ស្ថានភាព និងការតាមដាន
+              </p>
+            </div>
+            <button onclick="app.openModal('case')"
+              class="px-4 py-2.5 rounded-2xl gov-gradient text-white font-medium shadow-sm">
+              <i class="fa-solid fa-plus mr-2"></i>
+              <span data-i18n="addCase">បន្ថែមករណី</span>
+            </button>
+          </div>
+
+          <div class="glass-card rounded-3xl p-5 overflow-x-auto table-shell">
+            <table class="min-w-full text-sm">
+              <thead class="text-left bg-slate-50">
+                <tr>
+                  <th class="px-4 py-3 rounded-tl-2xl">ID</th>
+                  <th class="px-4 py-3" data-i18n="thTitle">ចំណងជើង</th>
+                  <th class="px-4 py-3" data-i18n="thType">ប្រភេទ</th>
+                  <th class="px-4 py-3" data-i18n="thStatus">ស្ថានភាព</th>
+                  <th class="px-4 py-3 rounded-tr-2xl" data-i18n="thAction">សកម្មភាព</th>
+                </tr>
+              </thead>
+              <tbody id="casesTable"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Application Management -->
+        <section id="application-mgmt" class="view hidden space-y-5">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <h3 class="section-title text-2xl font-bold" data-i18n="applicationManagement">ការគ្រប់គ្រងពាក្យស្នើសុំ
+              </h3>
+              <p class="text-sm text-slate-500 mt-1" data-i18n="applicationManagementSub">
+                គ្រប់គ្រងអាជ្ញាបណ្ណ វិញ្ញាបនបត្រ និងសំណើកែប្រែ
+              </p>
+            </div>
+            <button onclick="app.openModal('application')"
+              class="px-4 py-2.5 rounded-2xl gov-gradient text-white font-medium shadow-sm">
+              <i class="fa-solid fa-plus mr-2"></i>
+              <span data-i18n="addApplication">បន្ថែមពាក្យស្នើសុំ</span>
+            </button>
+          </div>
+
+          <div class="glass-card rounded-3xl p-5 overflow-x-auto table-shell">
+            <table class="min-w-full text-sm">
+              <thead class="text-left bg-slate-50">
+                <tr>
+                  <th class="px-4 py-3 rounded-tl-2xl">ID</th>
+                  <th class="px-4 py-3" data-i18n="thService">សេវា</th>
+                  <th class="px-4 py-3" data-i18n="thCompany">ក្រុមហ៊ុន</th>
+                  <th class="px-4 py-3" data-i18n="thStatus">ស្ថានភាព</th>
+                  <th class="px-4 py-3" data-i18n="thPayment">ការទូទាត់</th>
+                  <th class="px-4 py-3 rounded-tr-2xl" data-i18n="thAction">សកម្មភាព</th>
+                </tr>
+              </thead>
+              <tbody id="applicationsTable"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Document In -->
+        <section id="document-in" class="view hidden space-y-5">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <h3 class="section-title text-2xl font-bold" data-i18n="documentInTitle">ឯកសារ-ចូល</h3>
+              <p class="text-sm text-slate-500 mt-1" data-i18n="documentInSub">បញ្ចូលឯកសារ កត់ត្រា និងរក្សាទុក metadata
+              </p>
+            </div>
+          </div>
+
+          <div class="grid xl:grid-cols-5 gap-6">
+            <div class="xl:col-span-2 glass-card rounded-3xl p-5">
+              <h4 class="text-lg font-semibold mb-4 text-slate-800" data-i18n="uploadDocument">បញ្ចូលឯកសារ</h4>
+              <form id="documentInForm" class="space-y-4">
+                <input id="docTitle" class="w-full rounded-2xl border border-slate-200 px-4 py-3" required
+                  placeholder="កម្មវត្ថុ / Title">
+                <input id="submittedBy" class="w-full rounded-2xl border border-slate-200 px-4 py-3" required
+                  placeholder="ឈ្មោះក្រុមហ៊ុន / Company">
+                <select id="docCategory" class="w-full rounded-2xl border border-slate-200 px-4 py-3 bg-white">
+                  <option value="Incoming">Incoming</option>
+                  <option value="Reference">Reference</option>
+                </select>
+                <input id="docFiles" type="file" multiple
+                  class="w-full rounded-2xl border border-slate-200 px-4 py-3 bg-white">
+                <textarea id="docNote" rows="4" class="w-full rounded-2xl border border-slate-200 px-4 py-3"
+                  placeholder="កំណត់ចំណាំ / Notes"></textarea>
+                <button type="submit" class="w-full rounded-2xl gov-gradient text-white px-4 py-3 font-medium shadow-sm"
+                  data-i18n="saveDocument">
+                  រក្សាទុកឯកសារ
+                </button>
+              </form>
+            </div>
+
+            <div class="xl:col-span-3 glass-card rounded-3xl p-5 overflow-x-auto table-shell">
+              <table class="min-w-full text-sm">
+                <thead class="text-left bg-slate-50">
+                  <tr>
+                    <th class="px-4 py-3 rounded-tl-2xl">#</th>
+                    <th class="px-4 py-3" data-i18n="thTitle">ចំណងជើង</th>
+                    <th class="px-4 py-3" data-i18n="thCompany">ក្រុមហ៊ុន</th>
+                    <th class="px-4 py-3" data-i18n="thType">ប្រភេទ</th>
+                    <th class="px-4 py-3" data-i18n="thFiles">ឯកសារ</th>
+                    <th class="px-4 py-3 rounded-tr-2xl" data-i18n="thAction">សកម្មភាព</th>
+                  </tr>
+                </thead>
+                <tbody id="documentInTable"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- Document Out -->
+        <section id="document-out" class="view hidden space-y-5">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <h3 class="section-title text-2xl font-bold" data-i18n="documentOutTitle">ឯកសារ-ចេញ</h3>
+              <p class="text-sm text-slate-500 mt-1" data-i18n="documentOutSub">កត់ត្រាឯកសារដែលបានផ្ញើ និងស្ថានភាព</p>
+            </div>
+            <button onclick="app.openModal('outgoing')"
+              class="px-4 py-2.5 rounded-2xl gov-gradient text-white font-medium shadow-sm">
+              <i class="fa-solid fa-plus mr-2"></i>
+              <span data-i18n="addOutgoing">បន្ថែមឯកសារ-ចេញ</span>
+            </button>
+          </div>
+
+          <div class="glass-card rounded-3xl p-5 overflow-x-auto table-shell">
+            <table class="min-w-full text-sm">
+              <thead class="text-left bg-slate-50">
+                <tr>
+                  <th class="px-4 py-3 rounded-tl-2xl">ID</th>
+                  <th class="px-4 py-3" data-i18n="thTitle">ចំណងជើង</th>
+                  <th class="px-4 py-3" data-i18n="thRecipient">អ្នកទទួល</th>
+                  <th class="px-4 py-3" data-i18n="thStatus">ស្ថានភាព</th>
+                  <th class="px-4 py-3 rounded-tr-2xl" data-i18n="thAction">សកម្មភាព</th>
+                </tr>
+              </thead>
+              <tbody id="documentsOutTable"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Review -->
+        <section id="review-process" class="view hidden space-y-5">
+          <div>
+            <h3 class="section-title text-2xl font-bold" data-i18n="reviewTitle">ដំណើរការត្រួតពិនិត្យ</h3>
+            <p class="text-sm text-slate-500 mt-1" data-i18n="reviewSub">
+              Pending → In Review → Approved / Returned / Rejected
+            </p>
+          </div>
+
+          <div class="glass-card rounded-3xl p-5 overflow-x-auto table-shell">
+            <table class="min-w-full text-sm">
+              <thead class="text-left bg-slate-50">
+                <tr>
+                  <th class="px-4 py-3 rounded-tl-2xl">ID</th>
+                  <th class="px-4 py-3" data-i18n="thCompany">ក្រុមហ៊ុន</th>
+                  <th class="px-4 py-3" data-i18n="thStatus">ស្ថានភាព</th>
+                  <th class="px-4 py-3 rounded-tr-2xl" data-i18n="reviewAction">សកម្មភាពពិនិត្យ</th>
+                </tr>
+              </thead>
+              <tbody id="reviewTable"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Meetings -->
+        <section id="meeting-mgmt" class="view hidden space-y-5">
+          <div class="grid xl:grid-cols-5 gap-6">
+            <div class="xl:col-span-2 glass-card rounded-3xl p-5">
+              <h3 class="section-title text-2xl font-bold mb-4" data-i18n="meetingTitle">ការប្រជុំ</h3>
+              <form id="meetingForm" class="space-y-4">
+                <input id="meetingTitleInput" class="w-full rounded-2xl border border-slate-200 px-4 py-3" required
+                  placeholder="Meeting title">
+                <select id="meetingRoom" class="w-full rounded-2xl border border-slate-200 px-4 py-3 bg-white">
+                  <option>Room A</option>
+                  <option>Room B</option>
+                  <option>Room C</option>
+                </select>
+                <input id="meetingDate" type="date" class="w-full rounded-2xl border border-slate-200 px-4 py-3"
+                  required>
+                <div class="grid grid-cols-2 gap-3">
+                  <input id="meetingStart" type="time" class="w-full rounded-2xl border border-slate-200 px-4 py-3"
+                    required>
+                  <input id="meetingEnd" type="time" class="w-full rounded-2xl border border-slate-200 px-4 py-3"
+                    required>
+                </div>
+                <input id="meetingLeader" class="w-full rounded-2xl border border-slate-200 px-4 py-3" required
+                  placeholder="Leader">
+                <input id="meetingParticipants" class="w-full rounded-2xl border border-slate-200 px-4 py-3"
+                  placeholder="Emails separated by comma">
+                <textarea id="meetingDescription" rows="3" class="w-full rounded-2xl border border-slate-200 px-4 py-3"
+                  placeholder="Description"></textarea>
+                <button type="submit" class="w-full rounded-2xl gov-gradient text-white px-4 py-3 font-medium shadow-sm"
+                  data-i18n="saveMeeting">
+                  រក្សាទុកការប្រជុំ
+                </button>
+              </form>
+            </div>
+
+            <div class="xl:col-span-3 glass-card rounded-3xl p-5 overflow-x-auto table-shell">
+              <table class="min-w-full text-sm">
+                <thead class="text-left bg-slate-50">
+                  <tr>
+                    <th class="px-4 py-3 rounded-tl-2xl" data-i18n="thTitle">ចំណងជើង</th>
+                    <th class="px-4 py-3" data-i18n="thDate">កាលបរិច្ឆេទ</th>
+                    <th class="px-4 py-3" data-i18n="thRoom">បន្ទប់</th>
+                    <th class="px-4 py-3" data-i18n="thStatus">ស្ថានភាព</th>
+                    <th class="px-4 py-3 rounded-tr-2xl" data-i18n="thAction">សកម្មភាព</th>
+                  </tr>
+                </thead>
+                <tbody id="meetingsTable"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- Statistics -->
+        <section id="statistics" class="view hidden space-y-5">
+          <div>
+            <h3 class="section-title text-2xl font-bold" data-i18n="statisticsTitle">ស្ថិតិ និងរបាយការណ៍</h3>
+            <p class="text-sm text-slate-500 mt-1" data-i18n="statisticsSub">សង្ខេបទិន្នន័យពីគ្រប់មុខងារ</p>
+          </div>
+
+          <div class="grid md:grid-cols-2 xl:grid-cols-4 gap-5">
+            <div class="glass-card rounded-3xl p-5">
+              <div class="text-sm text-slate-500" data-i18n="statActiveUsers">អ្នកប្រើប្រាស់សកម្ម</div>
+              <div id="statActiveUsers" class="text-4xl font-bold mt-2 text-slate-800">0</div>
+            </div>
+            <div class="glass-card rounded-3xl p-5">
+              <div class="text-sm text-slate-500" data-i18n="statApprovedApps">ពាក្យបានអនុម័ត</div>
+              <div id="statApprovedApps" class="text-4xl font-bold mt-2 text-slate-800">0</div>
+            </div>
+            <div class="glass-card rounded-3xl p-5">
+              <div class="text-sm text-slate-500" data-i18n="statPendingCases">ករណីកំពុងដំណើរការ</div>
+              <div id="statPendingCases" class="text-4xl font-bold mt-2 text-slate-800">0</div>
+            </div>
+            <div class="glass-card rounded-3xl p-5">
+              <div class="text-sm text-slate-500" data-i18n="statDocuments">ឯកសារសរុប</div>
+              <div id="statDocuments" class="text-4xl font-bold mt-2 text-slate-800">0</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Settings -->
+        <section id="settings" class="view hidden space-y-5">
+          <div>
+            <h3 class="section-title text-2xl font-bold" data-i18n="settingsTitle">ការកំណត់</h3>
+            <p class="text-sm text-slate-500 mt-1" data-i18n="settingsSub">ប្តូរភាសា រូបរាង និងគ្រប់គ្រងទិន្នន័យ</p>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-6">
+            <div class="glass-card rounded-3xl p-5 space-y-4">
+              <h4 class="font-semibold text-slate-800" data-i18n="languageSetting">ការកំណត់ភាសា</h4>
+              <div class="flex gap-3">
+                <button class="lang-btn px-4 py-3 rounded-2xl border border-slate-200 bg-white shadow-sm"
+                  data-lang="km">ខ្មែរ</button>
+                <button class="lang-btn px-4 py-3 rounded-2xl border border-slate-200 bg-white shadow-sm"
+                  data-lang="en">English</button>
+              </div>
+            </div>
+
+            <div class="glass-card rounded-3xl p-5 space-y-4">
+              <h4 class="font-semibold text-slate-800" data-i18n="dataManagement">ការគ្រប់គ្រងទិន្នន័យ</h4>
+              <div class="flex flex-wrap gap-3">
+                <button onclick="app.seedDemoData()"
+                  class="px-4 py-3 rounded-2xl border border-slate-200 bg-slate-50 shadow-sm" data-i18n="reloadDemo">
+                  បញ្ចូលទិន្នន័យគំរូឡើងវិញ
+                </button>
+                <button onclick="app.resetAllData()"
+                  class="px-4 py-3 rounded-2xl border border-red-200 bg-red-50 text-red-700 shadow-sm"
+                  data-i18n="clearData">
+                  លុបទិន្នន័យទាំងអស់
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <div id="crudModal" class="hidden fixed inset-0 z-50 items-center justify-center px-4 modal-backdrop">
+    <div class="bg-white w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden">
+      <div class="gov-gradient text-white px-6 py-4 flex items-center justify-between">
+        <h3 id="modalTitle" class="text-lg font-semibold">Form</h3>
+        <button onclick="app.closeModal()" class="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <form id="crudForm" class="p-6 grid md:grid-cols-2 gap-4"></form>
+    </div>
+  </div>
+</body>
+</html>

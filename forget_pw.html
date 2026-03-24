@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="km">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Forgot Password - OTP</title>
+  <link href="https://fonts.googleapis.com/css2?family=Siemreap&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Siemreap', sans-serif;
+      min-height: 100vh;
+      background: radial-gradient(circle at top left, rgba(255, 255, 255, .12), transparent 24%), linear-gradient(180deg, #2f63b7 0%, #243f99 55%, #1a2d80 100%);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px
+    }
+
+    .page {
+      width: 100%;
+      max-width: 1180px;
+      display: grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 28px;
+      align-items: center
+    }
+
+    .hero {
+      padding: 12px 6px
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid rgba(255, 255, 255, .18);
+      background: rgba(255, 255, 255, .08);
+      padding: 10px 16px;
+      border-radius: 999px;
+      font-size: 14px;
+      margin-bottom: 18px;
+      backdrop-filter: blur(8px)
+    }
+
+    .hero h1 {
+      margin: 0 0 12px;
+      font-size: 42px;
+      line-height: 1.25
+    }
+
+    .hero p {
+      margin: 0 0 22px;
+      font-size: 17px;
+      line-height: 1.8;
+      color: #dbeafe;
+      max-width: 650px
+    }
+
+    .steps {
+      display: grid;
+      gap: 14px;
+      max-width: 620px
+    }
+
+    .step {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      padding: 16px 18px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, .08);
+      border: 1px solid rgba(255, 255, 255, .1);
+      backdrop-filter: blur(8px)
+    }
+
+    .step-no {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, .14);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+      flex-shrink: 0
+    }
+
+    .step h3 {
+      margin: 0 0 4px;
+      font-size: 17px
+    }
+
+    .step p {
+      margin: 0;
+      font-size: 14px;
+      color: #dbeafe;
+      line-height: 1.7
+    }
+
+    .card {
+      background: rgba(255, 255, 255, .97);
+      color: #334155;
+      border-radius: 28px;
+      padding: 28px;
+      box-shadow: 0 16px 50px rgba(0, 0, 0, .22);
+      position: relative;
+      overflow: hidden
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background: linear-gradient(90deg, #19b6c9 0%, #3069ea 100%)
+    }
+
+    .top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px
+    }
+
+    .logo-wrap {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      box-shadow: 0 6px 18px rgba(15, 23, 42, .08)
+    }
+
+    .logo-wrap img {
+      width: 34px;
+      height: 34px;
+      object-fit: contain
+    }
+
+    .brand h2 {
+      margin: 0 0 4px;
+      color: #1e3a8a;
+      font-size: 22px
+    }
+
+    .brand small {
+      color: #64748b;
+      font-size: 13px
+    }
+
+    .lang-switch {
+      display: flex;
+      gap: 8px
+    }
+
+    .lang-btn {
+      border: 1px solid #dbe2ea;
+      background: #fff;
+      color: #475569;
+      padding: 8px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-weight: 600;
+      font-family: inherit
+    }
+
+    .lang-btn.active {
+      background: linear-gradient(90deg, #19b6c9 0%, #3069ea 100%);
+      color: #fff;
+      border-color: transparent
+    }
+
+    .title {
+      margin-bottom: 18px;
+      text-align: center
+    }
+
+    .title h3 {
+      margin: 0 0 8px;
+      color: #1e3a8a;
+      font-size: 28px
+    }
+
+    .title p {
+      margin: 0;
+      color: #64748b;
+      font-size: 14px;
+      line-height: 1.7
+    }
+
+    .stepper {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 20px
+    }
+
+    .stepper-item {
+      border-radius: 16px;
+      border: 1px solid #e2e8f0;
+      background: #f8fafc;
+      padding: 12px;
+      text-align: center;
+      font-size: 13px;
+      color: #64748b;
+      font-weight: 700
+    }
+
+    .stepper-item.active {
+      background: #eff6ff;
+      border-color: #93c5fd;
+      color: #1d4ed8
+    }
+
+    .stepper-item.done {
+      background: #ecfdf5;
+      border-color: #86efac;
+      color: #15803d
+    }
+
+    .panel {
+      display: none
+    }
+
+    .panel.active {
+      display: block
+    }
+
+    .form-group {
+      margin-bottom: 16px
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #334155
+    }
+
+    .form-control {
+      width: 100%;
+      border: 1px solid #dbe2ea;
+      background: #fff;
+      color: #0f172a;
+      border-radius: 18px;
+      padding: 14px 16px;
+      font-size: 15px;
+      font-family: inherit;
+      outline: none
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px
+    }
+
+    .otp-wrap {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 10px;
+      margin-bottom: 14px
+    }
+
+    .otp-input {
+      width: 100%;
+      height: 56px;
+      border: 1px solid #dbe2ea;
+      border-radius: 16px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: 700;
+      font-family: inherit;
+      outline: none
+    }
+
+    .helper-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 18px;
+      font-size: 13px;
+      color: #64748b
+    }
+
+    .link-btn {
+      background: none;
+      border: none;
+      color: #2563eb;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      padding: 0
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px
+    }
+
+    .btn {
+      border: none;
+      padding: 14px 16px;
+      border-radius: 16px;
+      font-size: 15px;
+      font-family: inherit;
+      cursor: pointer;
+      font-weight: 700
+    }
+
+    .btn-primary {
+      background: linear-gradient(90deg, #19b6c9 0%, #3069ea 100%);
+      color: #fff
+    }
+
+    .btn-secondary {
+      background: #fff;
+      color: #1e3a8a;
+      border: 1px solid #dbe2ea
+    }
+
+    .note {
+      margin-top: 16px;
+      padding: 14px 16px;
+      border-radius: 18px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      color: #64748b;
+      font-size: 13px;
+      line-height: 1.7
+    }
+
+    .success-box {
+      border-radius: 22px;
+      background: #ecfdf5;
+      border: 1px solid #86efac;
+      padding: 18px;
+      text-align: center;
+      margin-bottom: 18px
+    }
+
+    .success-icon {
+      width: 68px;
+      height: 68px;
+      margin: 0 auto 12px;
+      border-radius: 50%;
+      background: #22c55e;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      font-weight: 700
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 14px;
+      color: #2563eb;
+      font-weight: 700;
+      text-decoration: none;
+      font-size: 14px
+    }
+
+    .toast {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      background: #0f172a;
+      color: #fff;
+      padding: 14px 16px;
+      border-radius: 16px;
+      box-shadow: 0 14px 30px rgba(0, 0, 0, .2);
+      opacity: 0;
+      transform: translateY(14px);
+      pointer-events: none;
+      transition: .25s ease;
+      font-size: 14px;
+      max-width: 320px
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0)
+    }
+
+    .error-text {
+      font-size: 13px;
+      color: #dc2626;
+      margin-top: 6px;
+      min-height: 18px
+    }
+
+    @media(max-width:980px) {
+      .page {
+        grid-template-columns: 1fr
+      }
+
+      .hero {
+        order: 2
+      }
+
+      .card {
+        order: 1
+      }
+
+      .hero h1 {
+        font-size: 34px
+      }
+    }
+
+    @media(max-width:560px) {
+      body {
+        padding: 14px
+      }
+
+      .card {
+        padding: 20px;
+        border-radius: 22px
+      }
+
+      .top-row {
+        flex-direction: column;
+        align-items: flex-start
+      }
+
+      .row,
+      .actions {
+        grid-template-columns: 1fr
+      }
+
+      .otp-wrap {
+        gap: 8px
+      }
+
+      .otp-input {
+        height: 50px;
+        font-size: 20px
+      }
+
+      .hero h1 {
+        font-size: 28px
+      }
+
+      .stepper {
+        grid-template-columns: 1fr
+      }
+    }
+  </style>
+  <script src="auth.js"></script>
+</head>
+
+<body>
+  <div class="page">
+    <section class="hero">
+      <div class="hero-badge">🔒 សុវត្ថិភាពក្នុងការកំណត់ពាក្យសម្ងាត់ឡើងវិញ</div>
+      <h1>ភ្លេចលេខសម្ងាត់? កំណត់ឡើងវិញដោយ OTP</h1>
+      <p>បញ្ជាក់អត្តសញ្ញាណរបស់អ្នកតាមអ៊ីមែល ឬលេខទូរស័ព្ទ ទទួល OTP បញ្ចូលកូដបញ្ជាក់ ហើយកំណត់ពាក្យសម្ងាត់ថ្មីបានភ្លាមៗ។
+      </p>
+      <div class="steps">
+        <div class="step">
+          <div class="step-no">1</div>
+          <div>
+            <h3>បញ្ចូលព័ត៌មានគណនី</h3>
+            <p>បញ្ចូលអ៊ីមែល ឬលេខទូរស័ព្ទដែលបានចុះឈ្មោះក្នុងប្រព័ន្ធ។</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-no">2</div>
+          <div>
+            <h3>ទទួល និងបញ្ចូល OTP</h3>
+            <p>ប្រព័ន្ធនឹងផ្ញើលេខកូដ OTP 6 ខ្ទង់ទៅកាន់អ្នក។</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-no">3</div>
+          <div>
+            <h3>កំណត់ពាក្យសម្ងាត់ថ្មី</h3>
+            <p>បង្កើតពាក្យសម្ងាត់ថ្មី ហើយចូលប្រើប្រព័ន្ធវិញដោយសុវត្ថិភាព។</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="card">
+      <div class="top-row">
+        <div class="brand">
+          <div class="logo-wrap"><img src="logo_serc.png" alt="logo"></div>
+          <div>
+            <h2>SERC E-Flow</h2><small>Password Recovery</small>
+          </div>
+        </div>
+        <div class="lang-switch">
+          <button class="lang-btn active" onclick="setLanguage('km')">ខ្មែរ</button>
+          <button class="lang-btn" onclick="setLanguage('en')">EN</button>
+        </div>
+      </div>
+      <div class="title">
+        <h3>ភ្លេចលេខសម្ងាត់</h3>
+        <p>សូមអនុវត្តតាមជំហានខាងក្រោម ដើម្បីកំណត់ពាក្យសម្ងាត់ថ្មី</p>
+      </div>
+      <div class="stepper">
+        <div class="stepper-item active" id="indicator1">1. បញ្ជាក់គណនី</div>
+        <div class="stepper-item" id="indicator2">2. បញ្ចូល OTP</div>
+        <div class="stepper-item" id="indicator3">3. ពាក្យសម្ងាត់ថ្មី</div>
+      </div>
+      <div class="panel active" id="panel1">
+        <div class="form-group"><label for="identity">អ៊ីមែល ឬ លេខទូរស័ព្ទ</label><input class="form-control"
+            id="identity" type="text" placeholder="បញ្ចូលអ៊ីមែល ឬ លេខទូរស័ព្ទ"></div>
+        <div class="error-text" id="identityError"></div>
+        <div class="actions"><button class="btn btn-secondary" id="backLoginBtn" type="button">ត្រឡប់ទៅ
+            Login</button><button class="btn btn-primary" id="sendOtpBtn" type="button">ផ្ញើ OTP</button></div>
+        <div class="note">OTP នឹងត្រូវផ្ញើទៅគណនីដែលបានចុះឈ្មោះក្នុងប្រព័ន្ធ។ Demo OTP = <strong>123456</strong></div>
+      </div>
+      <div class="panel" id="panel2">
+        <div class="form-group"><label>បញ្ចូលលេខកូដ OTP</label>
+          <div class="otp-wrap"><input class="otp-input" maxlength="1" inputmode="numeric"><input class="otp-input"
+              maxlength="1" inputmode="numeric"><input class="otp-input" maxlength="1" inputmode="numeric"><input
+              class="otp-input" maxlength="1" inputmode="numeric"><input class="otp-input" maxlength="1"
+              inputmode="numeric"><input class="otp-input" maxlength="1" inputmode="numeric"></div>
+          <div class="error-text" id="otpError"></div>
+        </div>
+        <div class="helper-row"><span>OTP ផុតកំណត់ក្នុង <strong id="otpTimer">01:30</strong></span><button
+            class="link-btn" id="resendOtpBtn" type="button">ផ្ញើម្តងទៀត</button></div>
+        <div class="actions"><button class="btn btn-secondary" id="backToStep1Btn"
+            type="button">ត្រឡប់ក្រោយ</button><button class="btn btn-primary" id="verifyOtpBtn" type="button">បញ្ជាក់
+            OTP</button></div>
+      </div>
+      <div class="panel" id="panel3">
+        <div class="row">
+          <div class="form-group"><label for="newPassword">ពាក្យសម្ងាត់ថ្មី</label><input class="form-control"
+              id="newPassword" type="password" placeholder="បញ្ចូលពាក្យសម្ងាត់ថ្មី"></div>
+          <div class="form-group"><label for="confirmPassword">បញ្ជាក់ពាក្យសម្ងាត់ថ្មី</label><input
+              class="form-control" id="confirmPassword" type="password" placeholder="បញ្ចូលម្ដងទៀត"></div>
+        </div>
+        <div class="error-text" id="passwordError"></div>
+        <div class="actions"><button class="btn btn-secondary" id="backToStep2Btn"
+            type="button">ត្រឡប់ក្រោយ</button><button class="btn btn-primary" id="resetPasswordBtn"
+            type="button">រក្សាទុកពាក្យសម្ងាត់ថ្មី</button></div>
+      </div>
+      <div class="panel" id="panel4">
+        <div class="success-box">
+          <div class="success-icon">✓</div>
+          <h3>កំណត់ពាក្យសម្ងាត់ជោគជ័យ</h3>
+          <p>អ្នកអាចចូលប្រើប្រព័ន្ធវិញដោយប្រើពាក្យសម្ងាត់ថ្មីរបស់អ្នក។</p>
+        </div>
+        <div class="actions"><button class="btn btn-secondary" id="restartBtn" type="button">ធ្វើឡើងវិញ</button><button
+            class="btn btn-primary" id="goLoginBtn" type="button">ចូលទៅទំព័រ Login</button></div>
+        <a href="login.html" class="back-link">← ត្រឡប់ទៅ Login</a>
+      </div>
+    </section>
+  </div>
+  <div class="toast" id="toast"></div>
+
+  <script>
+    let otpSeconds = 90, otpTimerInterval;
+    function showToast(message) { const t = document.getElementById('toast'); t.textContent = message; t.classList.add('show'); clearTimeout(window.toastTimer); window.toastTimer = setTimeout(() => t.classList.remove('show'), 2600) }
+    function setStep(step) { [1, 2, 3, 4].forEach(n => document.getElementById('panel' + n).classList.toggle('active', n === step));[1, 2, 3].forEach(n => { const el = document.getElementById('indicator' + n); el.classList.remove('active', 'done'); if (n < step) el.classList.add('done'); if (n === step) el.classList.add('active') }); if (step === 4) { [1, 2, 3].forEach(n => document.getElementById('indicator' + n).classList.add('done')) } }
+    function formatTime(sec) { const m = String(Math.floor(sec / 60)).padStart(2, '0'); const s = String(sec % 60).padStart(2, '0'); return `${m}:${s}` }
+    function startOtpTimer() { clearInterval(otpTimerInterval); otpSeconds = 90; document.getElementById('otpTimer').textContent = formatTime(otpSeconds); otpTimerInterval = setInterval(() => { otpSeconds -= 1; document.getElementById('otpTimer').textContent = formatTime(otpSeconds); if (otpSeconds <= 0) { clearInterval(otpTimerInterval); showToast('OTP ផុតកំណត់។ សូមផ្ញើម្តងទៀត។') } }, 1000) }
+    function clearErrors() { ['identityError', 'otpError', 'passwordError'].forEach(id => document.getElementById(id).textContent = '') }
+    document.getElementById('sendOtpBtn').addEventListener('click', () => { clearErrors(); const identity = document.getElementById('identity').value.trim(); if (!findUser(identity)) { document.getElementById('identityError').textContent = 'គណនីមិនត្រូវបានរកឃើញ'; return; } generateOtp(); startOtpTimer(); setStep(2); showToast('OTP ត្រូវបានផ្ញើរួចហើយ។ Demo code: 123456') });
+    document.getElementById('resendOtpBtn').addEventListener('click', () => { generateOtp(); startOtpTimer(); showToast('OTP ត្រូវបានផ្ញើម្តងទៀត') });
+    document.getElementById('verifyOtpBtn').addEventListener('click', () => { clearErrors(); const otp = Array.from(document.querySelectorAll('.otp-input')).map(i => i.value).join(''); const result = verifyOtp(otp); if (result !== 'success') { document.getElementById('otpError').textContent = result === 'expired' ? 'OTP ផុតកំណត់' : 'OTP មិនត្រឹមត្រូវ'; return; } clearInterval(otpTimerInterval); setStep(3); showToast('OTP ត្រឹមត្រូវ។ សូមកំណត់ពាក្យសម្ងាត់ថ្មី។') });
+    document.getElementById('resetPasswordBtn').addEventListener('click', () => { clearErrors(); const identity = document.getElementById('identity').value.trim(); const p1 = document.getElementById('newPassword').value; const p2 = document.getElementById('confirmPassword').value; if (p1.length < 8) { document.getElementById('passwordError').textContent = 'ពាក្យសម្ងាត់ត្រូវមានយ៉ាងតិច 8 តួអក្សរ'; return; } if (p1 !== p2) { document.getElementById('passwordError').textContent = 'ពាក្យសម្ងាត់មិនដូចគ្នា'; return; } updatePassword(identity, p1); setStep(4); showToast('កំណត់ពាក្យសម្ងាត់រួចរាល់') });
+    document.getElementById('backLoginBtn').addEventListener('click', () => window.location.href = 'login.html');
+    document.getElementById('goLoginBtn').addEventListener('click', () => window.location.href = 'login.html');
+    document.getElementById('backToStep1Btn').addEventListener('click', () => setStep(1));
+    document.getElementById('backToStep2Btn').addEventListener('click', () => setStep(2));
+    document.getElementById('restartBtn').addEventListener('click', () => { document.getElementById('identity').value = ''; document.getElementById('newPassword').value = ''; document.getElementById('confirmPassword').value = ''; document.querySelectorAll('.otp-input').forEach(i => i.value = ''); setStep(1) });
+    document.querySelectorAll('.otp-input').forEach((input, index, arr) => { input.addEventListener('input', e => { e.target.value = e.target.value.replace(/\D/g, '').slice(0, 1); if (e.target.value && arr[index + 1]) arr[index + 1].focus() }); input.addEventListener('keydown', e => { if (e.key === 'Backspace' && !e.target.value && arr[index - 1]) arr[index - 1].focus() }); input.addEventListener('paste', e => { e.preventDefault(); const pasted = (e.clipboardData.getData('text') || '').replace(/\D/g, '').slice(0, 6); pasted.split('').forEach((char, i) => { if (arr[i]) arr[i].value = char }) }) });
+    const translations = {
+      km: {
+        title: "ភ្លេចលេខសម្ងាត់",
+        subtitle: "សូមអនុវត្តតាមជំហានខាងក្រោម ដើម្បីកំណត់ពាក្យសម្ងាត់ថ្មី",
+        step1: "បញ្ជាក់គណនី",
+        step2: "បញ្ចូល OTP",
+        step3: "ពាក្យសម្ងាត់ថ្មី"
+      },
+      en: {
+        title: "Forgot Password",
+        subtitle: "Follow the steps below to reset your password",
+        step1: "Verify Account",
+        step2: "Enter OTP",
+        step3: "New Password"
+      }
+    };
+
+    function setLanguage(lang) {
+      const t = translations[lang];
+
+      document.querySelector(".title h3").textContent = t.title;
+      document.querySelector(".title p").textContent = t.subtitle;
+
+      document.getElementById("indicator1").textContent = "1. " + t.step1;
+      document.getElementById("indicator2").textContent = "2. " + t.step2;
+      document.getElementById("indicator3").textContent = "3. " + t.step3;
+
+      document.querySelectorAll(".lang-btn").forEach(btn => {
+        btn.classList.remove("active");
+      });
+
+      document.querySelectorAll(".lang-btn")[lang === "km" ? 0 : 1].classList.add("active");
+    }
+  </script>
+</body>
+
+</html>
