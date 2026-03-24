@@ -569,7 +569,7 @@
         </div>
         <div class="actions"><button class="btn btn-secondary" id="restartBtn" type="button">ធ្វើឡើងវិញ</button><button
             class="btn btn-primary" id="goLoginBtn" type="button">ចូលទៅទំព័រ Login</button></div>
-        <a href="login.html" class="back-link">← ត្រឡប់ទៅ Login</a>
+        <a href="index.html" class="back-link">← ត្រឡប់ទៅ Login</a>
       </div>
     </section>
   </div>
@@ -586,8 +586,8 @@
     document.getElementById('resendOtpBtn').addEventListener('click', () => { generateOtp(); startOtpTimer(); showToast('OTP ត្រូវបានផ្ញើម្តងទៀត') });
     document.getElementById('verifyOtpBtn').addEventListener('click', () => { clearErrors(); const otp = Array.from(document.querySelectorAll('.otp-input')).map(i => i.value).join(''); const result = verifyOtp(otp); if (result !== 'success') { document.getElementById('otpError').textContent = result === 'expired' ? 'OTP ផុតកំណត់' : 'OTP មិនត្រឹមត្រូវ'; return; } clearInterval(otpTimerInterval); setStep(3); showToast('OTP ត្រឹមត្រូវ។ សូមកំណត់ពាក្យសម្ងាត់ថ្មី។') });
     document.getElementById('resetPasswordBtn').addEventListener('click', () => { clearErrors(); const identity = document.getElementById('identity').value.trim(); const p1 = document.getElementById('newPassword').value; const p2 = document.getElementById('confirmPassword').value; if (p1.length < 8) { document.getElementById('passwordError').textContent = 'ពាក្យសម្ងាត់ត្រូវមានយ៉ាងតិច 8 តួអក្សរ'; return; } if (p1 !== p2) { document.getElementById('passwordError').textContent = 'ពាក្យសម្ងាត់មិនដូចគ្នា'; return; } updatePassword(identity, p1); setStep(4); showToast('កំណត់ពាក្យសម្ងាត់រួចរាល់') });
-    document.getElementById('backLoginBtn').addEventListener('click', () => window.location.href = 'login.html');
-    document.getElementById('goLoginBtn').addEventListener('click', () => window.location.href = 'login.html');
+    document.getElementById('backLoginBtn').addEventListener('click', () => window.location.href = 'index.html');
+    document.getElementById('goLoginBtn').addEventListener('click', () => window.location.href = 'index.html');
     document.getElementById('backToStep1Btn').addEventListener('click', () => setStep(1));
     document.getElementById('backToStep2Btn').addEventListener('click', () => setStep(2));
     document.getElementById('restartBtn').addEventListener('click', () => { document.getElementById('identity').value = ''; document.getElementById('newPassword').value = ''; document.getElementById('confirmPassword').value = ''; document.querySelectorAll('.otp-input').forEach(i => i.value = ''); setStep(1) });

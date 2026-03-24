@@ -577,10 +577,10 @@ const app = {
     if (!confirm(this.t("confirmLogout"))) return;
     localStorage.removeItem("authUser");
 
-    if (window.location.href.includes("login.html")) return;
+    if (window.location.href.includes("index.html")) return;
 
     try {
-      window.location.href = "login.html";
+      window.location.href = "index.html";
     } catch (e) {
       alert(this.t("noLoginPage"));
     }
