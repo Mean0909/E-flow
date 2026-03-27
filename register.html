@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SERC E-Flow - Sign Up</title>
+    <link href="https://fonts.googleapis.com/css2?family=Siemreap&display=swap" rel="stylesheet" />
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #14b8c4;
+            --line: #dbe4f0;
+            --text-dark: #0f172a;
+            --text-body: #334155;
+            --text-soft: #64748b;
+            --bg-card: rgba(255, 255, 255, 0.98);
+            --success: #16a34a;
+            --danger: #dc2626;
+        }
+
+        html, body {
+            width: 100%;
+            min-height: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: "Siemreap", "Khmer OS Siemreap", sans-serif;
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at top left, rgba(255,255,255,0.14), transparent 22%),
+                radial-gradient(circle at bottom right, rgba(20,184,196,0.10), transparent 20%),
+                linear-gradient(135deg, #1f5fb8 0%, #1f4aa5 42%, #1b348d 100%);
+            padding: 20px;
+            color: #fff;
+        }
+
+        .page {
+            width: 100%;
+            max-width: 1180px;
+            margin: 0 auto;
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 18px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-circle {
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            overflow: hidden;
+            background: rgba(255,255,255,.16);
+            border: 2px solid rgba(255,255,255,.25);
+            box-shadow: 0 10px 24px rgba(0,0,0,.18);
+            flex-shrink: 0;
+        }
+
+        .logo-circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .brand-text {
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .lang-switch {
+            display: flex;
+            gap: 6px;
+            padding: 4px;
+            background: rgba(255,255,255,.15);
+            border: 1px solid rgba(255,255,255,.18);
+            border-radius: 999px;
+            backdrop-filter: blur(8px);
+        }
+
+        .lang-switch button {
+            border: none;
+            background: transparent;
+            color: #fff;
+            padding: 8px 14px;
+            border-radius: 999px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 13px;
+            transition: .2s ease;
+        }
+
+        .lang-switch button.active {
+            background: #fff;
+            color: var(--primary);
+        }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: 26px;
+            overflow: hidden;
+            box-shadow: 0 22px 60px rgba(0,0,0,.16);
+        }
+
+        .hero-banner {
+            background: linear-gradient(90deg, #2b58db 0%, #5d97ea 100%);
+            padding: 20px 34px 20px;
+            color: #fff;
+        }
+
+        .hero-banner h1 {
+            font-size: 28px;
+            line-height: 1.3;
+            margin-bottom: 10px;
+        }
+
+        .hero-banner p {
+            font-size: 16px;
+            opacity: .95;
+        }
+
+        .form-wrap {
+            padding: 30px 28px 24px;
+            color: var(--text-dark);
+        }
+
+        .section-title {
+            font-size: 26px;
+            margin-bottom: 6px;
+        }
+
+        .section-desc {
+            color: var(--text-soft);
+            font-size: 15px;
+            margin-bottom: 22px;
+        }
+
+        .msg {
+            display: none;
+            margin-bottom: 16px;
+            padding: 12px 14px;
+            border-radius: 12px;
+            font-size: 14px;
+        }
+
+        .msg.error {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #b91c1c;
+        }
+
+        .msg.success {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            color: #15803d;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .field {
+            margin-bottom: 16px;
+        }
+
+        .field label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .input-wrap {
+            position: relative;
+        }
+
+        input,
+        select {
+            width: 100%;
+            height: 50px;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 0 16px;
+            font-size: 15px;
+            background: #fff;
+            outline: none;
+            color: var(--text-dark);
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #8db2ff;
+            box-shadow: 0 0 0 4px rgba(37,99,235,.10);
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: transparent;
+            color: var(--primary);
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .hint {
+            margin-top: 6px;
+            font-size: 13px;
+            color: var(--text-soft);
+        }
+
+        .strength {
+            margin-top: 8px;
+        }
+
+        .strength-bar {
+            height: 8px;
+            border-radius: 999px;
+            background: #e9eef8;
+            overflow: hidden;
+            margin-bottom: 6px;
+        }
+
+        .strength-fill {
+            height: 100%;
+            width: 0;
+            border-radius: 999px;
+            transition: .25s ease;
+            background: #d1d5db;
+        }
+
+        .strength-text {
+            font-size: 13px;
+            color: var(--text-soft);
+        }
+
+        .otp-row {
+            display: grid;
+            grid-template-columns: 1fr 130px;
+            gap: 10px;
+        }
+
+        .btn {
+            border: none;
+            border-radius: 14px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 700;
+            transition: .2s ease;
+        }
+
+        .btn-soft {
+            height: 50px;
+            background: #dfe9ff;
+            color: var(--primary);
+        }
+
+        .btn-soft:disabled {
+            background: #edf2fb;
+            color: #94a3b8;
+            cursor: not-allowed;
+        }
+
+        .btn-primary {
+            width: 100%;
+            height: 52px;
+            background: linear-gradient(90deg, #1fb6c9 0%, #2563eb 100%);
+            color: #fff;
+            margin-top: 6px;
+            box-shadow: 0 14px 32px rgba(37,99,235,.22);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+        }
+
+        .footer-actions {
+            margin-top: 18px;
+            text-align: center;
+            color: var(--text-soft);
+            font-size: 14px;
+        }
+
+        .footer-actions a {
+            color: var(--primary);
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 14px;
+            }
+
+            .topbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .hero-banner {
+                padding: 10px 20px 80px;
+            }
+
+            .hero-banner h1 {
+                font-size: 24px;
+            }
+
+            .form-wrap {
+                padding: 20px 18px 20px;
+            }
+
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+
+            .otp-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <header class="topbar">
+            <div class="brand">
+                <div class="logo-circle">
+                    <img src="img/logo_serc.png" alt="SERC">
+                </div>
+                <div class="brand-text" id="agencyText">និយ័តករមូលប័ត្រកម្ពុជា</div>
+            </div>
+
+            <div class="lang-switch">
+                <button type="button" id="btnKm" class="active">ខ្មែរ</button>
+                <button type="button" id="btnEn">EN</button>
+            </div>
+        </header>
+
+        <div class="card">
+            <div class="hero-banner">
+                <h1 id="heroTitle">បង្កើតគណនីរបស់អ្នកសម្រាប់ចូលប្រើប្រព័ន្ធ</h1>
+                <p id="heroDesc">សូមបំពេញព័ត៌មានចុះឈ្មោះ អត្តសញ្ញាណ និងការផ្ទៀងផ្ទាត់ឲ្យបានគ្រប់គ្រាន់។</p>
+            </div>
+
+            <div class="form-wrap">
+                <h2 class="section-title" id="formTitle">បង្កើតគណនី</h2>
+                <p class="section-desc" id="formDesc">សូមបំពេញគ្រប់ព័ត៌មានដែលចាំបាច់។</p>
+
+                <div id="errorMsg" class="msg error"></div>
+                <div id="successMsg" class="msg success"></div>
+
+                <form id="registerForm">
+                    <div class="grid-2">
+                        <div class="field">
+                            <label for="fullName" id="labelFullName">ឈ្មោះពេញ</label>
+                            <input id="fullName" type="text" placeholder="បញ្ចូលឈ្មោះពេញ">
+                        </div>
+
+                        <div class="field">
+                            <label for="position" id="labelPosition">តួនាទី</label>
+                            <input id="position" type="text" placeholder="បញ្ចូលតួនាទី">
+                        </div>
+                    </div>
+
+                    <div class="grid-2">
+                        <div class="field">
+                            <label for="company" id="labelCompany">ក្រុមហ៊ុន / ស្ថាប័ន</label>
+                            <input id="company" type="text" placeholder="បញ្ចូលឈ្មោះក្រុមហ៊ុន ឬ ស្ថាប័ន">
+                        </div>
+
+                        <div class="field">
+                            <label for="dob" id="labelDob">ថ្ងៃខែឆ្នាំកំណើត</label>
+                            <input id="dob" type="date">
+                        </div>
+                    </div>
+
+                    <div class="grid-2">
+                        <div class="field">
+                            <label for="username" id="labelUsername">ឈ្មោះអ្នកប្រើ</label>
+                            <input id="username" type="text" placeholder="បញ្ចូល username">
+                        </div>
+
+                        <div class="field">
+                            <label for="email" id="labelEmail">អ៊ីមែល</label>
+                            <input id="email" type="email" placeholder="example@gmail.com">
+                        </div>
+                    </div>
+
+                    <div class="grid-2">
+                        <div class="field">
+                            <label for="password" id="labelPassword">ពាក្យសម្ងាត់</label>
+                            <div class="input-wrap">
+                                <input id="password" type="password" placeholder="បង្កើតពាក្យសម្ងាត់">
+                                <button class="password-toggle" type="button" data-target="password" id="togglePassword">Show</button>
+                            </div>
+                            <div class="strength">
+                                <div class="strength-bar">
+                                    <div id="strengthFill" class="strength-fill"></div>
+                                </div>
+                                <div id="strengthText" class="strength-text">យ៉ាងហោចណាស់ 8 តួអក្សរ។</div>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label for="confirmPassword" id="labelConfirmPassword">បញ្ជាក់ពាក្យសម្ងាត់</label>
+                            <div class="input-wrap">
+                                <input id="confirmPassword" type="password" placeholder="បញ្ជាក់ពាក្យសម្ងាត់">
+                                <button class="password-toggle" type="button" data-target="confirmPassword" id="toggleConfirmPassword">Show</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label for="userType" id="labelUserType">ប្រភេទអ្នកប្រើ</label>
+                        <select id="userType">
+                            <option value="" id="optUserTypeDefault">ជ្រើសរើសប្រភេទអ្នកប្រើ</option>
+                            <option value="national" id="optNational">អ្នកប្រើជនជាតិខ្មែរ</option>
+                            <option value="foreign" id="optForeign">អ្នកប្រើជនបរទេស</option>
+                            <option value="staff" id="optStaff">បុគ្គលិកខាងក្នុង</option>
+                        </select>
+                    </div>
+
+                    <div class="grid-2">
+                        <div class="field" id="nationalIdField">
+                            <label for="nationalId" id="labelNationalId">អត្តសញ្ញាណប័ណ្ណជាតិ</label>
+                            <input id="nationalId" type="text" placeholder="បញ្ចូលលេខអត្តសញ្ញាណប័ណ្ណ">
+                        </div>
+
+                        <div class="field hidden" id="passportField">
+                            <label for="passportId" id="labelPassportId">លិខិតឆ្លងដែន</label>
+                            <input id="passportId" type="text" placeholder="បញ្ចូលលេខ Passport">
+                        </div>
+                    </div>
+
+                    <div class="grid-2">
+                        <div class="field">
+                            <label for="otpMethod" id="labelOtpMethod">វិធីផ្ទៀងផ្ទាត់ OTP</label>
+                            <select id="otpMethod">
+                                <option value="" id="optOtpDefault">ជ្រើសរើសវិធី</option>
+                                <option value="phone" id="optPhone">ទូរស័ព្ទ</option>
+                                <option value="email" id="optEmail">អ៊ីមែល</option>
+                            </select>
+                        </div>
+
+                        <div class="field">
+                            <label for="contactValue" id="labelContactValue">លេខទូរស័ព្ទ / អ៊ីមែល</label>
+                            <div class="otp-row">
+                                <input id="contactValue" type="text" placeholder="បញ្ចូលព័ត៌មានទំនាក់ទំនង">
+                                <button id="sendOtpBtn" type="button" class="btn btn-soft" disabled>Send OTP</button>
+                            </div>
+                            <div class="hint" id="otpHint">សូមជ្រើសរើសវិធី OTP មុនសិន។</div>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label for="otpCode" id="labelOtpCode">លេខកូដ OTP</label>
+                        <input id="otpCode" type="text" placeholder="បញ្ចូល OTP">
+                    </div>
+
+                    <button class="btn btn-primary" type="submit" id="createBtn">បង្កើតគណនី</button>
+
+                    <div class="footer-actions">
+                        <span id="haveAccountText">មានគណនីរួចហើយ?</span>
+                        <a href="index.html" id="loginLinkText">ចូលប្រើប្រព័ន្ធ</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const translations = {
+            km: {
+                agency: "និយ័តករមូលប័ត្រកម្ពុជា",
+                heroTitle: "បង្កើតគណនីរបស់អ្នកសម្រាប់ចូលប្រើប្រព័ន្ធ",
+                heroDesc: "សូមបំពេញព័ត៌មានចុះឈ្មោះ អត្តសញ្ញាណ និងការផ្ទៀងផ្ទាត់ឲ្យបានគ្រប់គ្រាន់។",
+                formTitle: "បង្កើតគណនី",
+                formDesc: "សូមបំពេញគ្រប់ព័ត៌មានដែលចាំបាច់។",
+                fullName: "ឈ្មោះពេញ",
+                fullNamePh: "បញ្ចូលឈ្មោះពេញ",
+                position: "តួនាទី",
+                positionPh: "បញ្ចូលតួនាទី",
+                company: "ក្រុមហ៊ុន / ស្ថាប័ន",
+                companyPh: "បញ្ចូលឈ្មោះក្រុមហ៊ុន ឬ ស្ថាប័ន",
+                dob: "ថ្ងៃខែឆ្នាំកំណើត",
+                username: "ឈ្មោះអ្នកប្រើ",
+                usernamePh: "បញ្ចូល username",
+                email: "អ៊ីមែល",
+                emailPh: "example@gmail.com",
+                password: "ពាក្យសម្ងាត់",
+                passwordPh: "បង្កើតពាក្យសម្ងាត់",
+                confirmPassword: "បញ្ជាក់ពាក្យសម្ងាត់",
+                confirmPasswordPh: "បញ្ជាក់ពាក្យសម្ងាត់",
+                strengthHint: "យ៉ាងហោចណាស់ 8 តួអក្សរ។",
+                userType: "ប្រភេទអ្នកប្រើ",
+                userTypeDefault: "ជ្រើសរើសប្រភេទអ្នកប្រើ",
+                national: "អ្នកប្រើជនជាតិខ្មែរ",
+                foreign: "អ្នកប្រើជនបរទេស",
+                staff: "បុគ្គលិកខាងក្នុង",
+                nationalId: "អត្តសញ្ញាណប័ណ្ណជាតិ",
+                nationalIdPh: "បញ្ចូលលេខអត្តសញ្ញាណប័ណ្ណ",
+                passportId: "លិខិតឆ្លងដែន",
+                passportIdPh: "បញ្ចូលលេខ Passport",
+                otpMethod: "វិធីផ្ទៀងផ្ទាត់ OTP",
+                otpMethodDefault: "ជ្រើសរើសវិធី",
+                phone: "ទូរស័ព្ទ",
+                otpEmail: "អ៊ីមែល",
+                contact: "លេខទូរស័ព្ទ / អ៊ីមែល",
+                contactPh: "បញ្ចូលព័ត៌មានទំនាក់ទំនង",
+                otpHint: "សូមជ្រើសរើសវិធី OTP មុនសិន។",
+                otpCode: "លេខកូដ OTP",
+                otpCodePh: "បញ្ចូល OTP",
+                create: "បង្កើតគណនី",
+                haveAccount: "មានគណនីរួចហើយ?",
+                login: "ចូលប្រើប្រព័ន្ធ",
+                sendOtp: "ផ្ញើ OTP",
+                wait: "រង់ចាំ",
+                show: "បង្ហាញ",
+                hide: "លាក់",
+                weak: "ពាក្យសម្ងាត់ខ្សោយ",
+                medium: "ពាក្យសម្ងាត់មធ្យម",
+                strong: "ពាក្យសម្ងាត់ខ្លាំង",
+                required: "❌ សូមបំពេញគ្រប់ព័ត៌មានចាំបាច់។",
+                pwdLen: "❌ ពាក្យសម្ងាត់ត្រូវមានយ៉ាងហោចណាស់ 8 តួអក្សរ។",
+                pwdMatch: "❌ ពាក្យសម្ងាត់មិនដូចគ្នា។",
+                nationalRequired: "❌ សូមបញ្ចូលលេខអត្តសញ្ញាណប័ណ្ណជាតិ។",
+                passportRequired: "❌ សូមបញ្ចូលលេខ Passport។",
+                otpMethodRequired: "❌ សូមជ្រើសរើសវិធី OTP។",
+                otpSendFirst: "❌ សូមផ្ញើ OTP ជាមុនសិន។",
+                otpInvalid: "❌ OTP មិនត្រឹមត្រូវ។",
+                usernameExists: "❌ Username នេះមានរួចហើយ។",
+                emailExists: "❌ Email នេះមានរួចហើយ។",
+                otpSent: "✅ OTP ត្រូវបានផ្ញើដោយជោគជ័យ។ Demo OTP:",
+                success: "✅ បង្កើតគណនីបានជោគជ័យ។ សូមចូលប្រើប្រព័ន្ធ។"
+            },
+            en: {
+                agency: "Securities and Exchange Regulator of Cambodia",
+                heroTitle: "Create your account to Sign in",
+                heroDesc: "Complete the sign-up form with identity and verification details.",
+                formTitle: "Sign Up",
+                formDesc: "Fill in all required fields to continue.",
+                fullName: "Full Name",
+                fullNamePh: "Enter full name",
+                position: "Position",
+                positionPh: "Enter position",
+                company: "Company / Organization",
+                companyPh: "Enter company or organization",
+                dob: "Date of Birth",
+                username: "Username",
+                usernamePh: "Enter username",
+                email: "Email",
+                emailPh: "example@gmail.com",
+                password: "Password",
+                passwordPh: "Create password",
+                confirmPassword: "Confirm Password",
+                confirmPasswordPh: "Confirm password",
+                strengthHint: "Use at least 8 characters.",
+                userType: "User Type",
+                userTypeDefault: "Select user type",
+                national: "National User",
+                foreign: "Foreign User",
+                staff: "Internal Staff",
+                nationalId: "National ID",
+                nationalIdPh: "Enter national ID",
+                passportId: "Passport ID",
+                passportIdPh: "Enter passport ID",
+                otpMethod: "OTP Verification Method",
+                otpMethodDefault: "Choose method",
+                phone: "Phone",
+                otpEmail: "Email",
+                contact: "Phone / Email",
+                contactPh: "Enter contact",
+                otpHint: "Please choose OTP method first.",
+                otpCode: "OTP Code",
+                otpCodePh: "Enter OTP code",
+                create: "Create Account",
+                haveAccount: "Already have an account?",
+                login: "Sign In",
+                sendOtp: "Send OTP",
+                wait: "Wait",
+                show: "Show",
+                hide: "Hide",
+                weak: "Weak password",
+                medium: "Medium password",
+                strong: "Strong password",
+                required: "❌ Please fill in all required fields.",
+                pwdLen: "❌ Password must be at least 8 characters.",
+                pwdMatch: "❌ Password and confirm password do not match.",
+                nationalRequired: "❌ Please enter National ID.",
+                passportRequired: "❌ Please enter Passport ID.",
+                otpMethodRequired: "❌ Please choose OTP verification method.",
+                otpSendFirst: "❌ Please send OTP first.",
+                otpInvalid: "❌ Invalid OTP code.",
+                usernameExists: "❌ This username already exists.",
+                emailExists: "❌ This email already exists.",
+                otpSent: "✅ OTP sent successfully. Demo OTP:",
+                success: "✅ Account created successfully. Please sign in."
+            }
+        };
+
+        let currentLang = "km";
+        let generatedOtp = "";
+        let otpCountdown = null;
+        let otpSeconds = 0;
+
+        const form = document.getElementById("registerForm");
+        const errorMsg = document.getElementById("errorMsg");
+        const successMsg = document.getElementById("successMsg");
+
+        const password = document.getElementById("password");
+        const confirmPassword = document.getElementById("confirmPassword");
+        const strengthFill = document.getElementById("strengthFill");
+        const strengthText = document.getElementById("strengthText");
+
+        const userType = document.getElementById("userType");
+        const nationalIdField = document.getElementById("nationalIdField");
+        const passportField = document.getElementById("passportField");
+
+        const otpMethod = document.getElementById("otpMethod");
+        const contactValue = document.getElementById("contactValue");
+        const sendOtpBtn = document.getElementById("sendOtpBtn");
+        const otpHint = document.getElementById("otpHint");
+
+        function t(key) {
+            return translations[currentLang][key];
+        }
+
+        function applyLanguage(lang) {
+            currentLang = lang;
+            document.documentElement.lang = lang;
+
+            document.getElementById("agencyText").innerText = t("agency");
+            document.getElementById("heroTitle").innerText = t("heroTitle");
+            document.getElementById("heroDesc").innerText = t("heroDesc");
+            document.getElementById("formTitle").innerText = t("formTitle");
+            document.getElementById("formDesc").innerText = t("formDesc");
+
+            document.getElementById("labelFullName").innerText = t("fullName");
+            document.getElementById("fullName").placeholder = t("fullNamePh");
+            document.getElementById("labelPosition").innerText = t("position");
+            document.getElementById("position").placeholder = t("positionPh");
+            document.getElementById("labelCompany").innerText = t("company");
+            document.getElementById("company").placeholder = t("companyPh");
+            document.getElementById("labelDob").innerText = t("dob");
+            document.getElementById("labelUsername").innerText = t("username");
+            document.getElementById("username").placeholder = t("usernamePh");
+            document.getElementById("labelEmail").innerText = t("email");
+            document.getElementById("email").placeholder = t("emailPh");
+            document.getElementById("labelPassword").innerText = t("password");
+            document.getElementById("password").placeholder = t("passwordPh");
+            document.getElementById("labelConfirmPassword").innerText = t("confirmPassword");
+            document.getElementById("confirmPassword").placeholder = t("confirmPasswordPh");
+            document.getElementById("labelUserType").innerText = t("userType");
+            document.getElementById("optUserTypeDefault").innerText = t("userTypeDefault");
+            document.getElementById("optNational").innerText = t("national");
+            document.getElementById("optForeign").innerText = t("foreign");
+            document.getElementById("optStaff").innerText = t("staff");
+            document.getElementById("labelNationalId").innerText = t("nationalId");
+            document.getElementById("nationalId").placeholder = t("nationalIdPh");
+            document.getElementById("labelPassportId").innerText = t("passportId");
+            document.getElementById("passportId").placeholder = t("passportIdPh");
+            document.getElementById("labelOtpMethod").innerText = t("otpMethod");
+            document.getElementById("optOtpDefault").innerText = t("otpMethodDefault");
+            document.getElementById("optPhone").innerText = t("phone");
+            document.getElementById("optEmail").innerText = t("otpEmail");
+            document.getElementById("labelContactValue").innerText = t("contact");
+            document.getElementById("contactValue").placeholder = t("contactPh");
+            document.getElementById("labelOtpCode").innerText = t("otpCode");
+            document.getElementById("otpCode").placeholder = t("otpCodePh");
+            document.getElementById("createBtn").innerText = t("create");
+            document.getElementById("haveAccountText").innerText = t("haveAccount");
+            document.getElementById("loginLinkText").innerText = t("login");
+            otpHint.innerText = t("otpHint");
+
+            document.getElementById("togglePassword").innerText =
+                password.type === "password" ? t("show") : t("hide");
+            document.getElementById("toggleConfirmPassword").innerText =
+                confirmPassword.type === "password" ? t("show") : t("hide");
+
+            if (sendOtpBtn.dataset.waiting === "true") {
+                sendOtpBtn.innerText = `${t("wait")} ${otpSeconds}s`;
+            } else {
+                sendOtpBtn.innerText = t("sendOtp");
+            }
+
+            if (!password.value) {
+                strengthText.innerText = t("strengthHint");
+            } else {
+                evaluatePassword(password.value);
+            }
+
+            document.getElementById("btnKm").classList.toggle("active", lang === "km");
+            document.getElementById("btnEn").classList.toggle("active", lang === "en");
+        }
+
+        function showError(message) {
+            successMsg.style.display = "none";
+            errorMsg.textContent = message;
+            errorMsg.style.display = "block";
+        }
+
+        function showSuccess(message) {
+            errorMsg.style.display = "none";
+            successMsg.textContent = message;
+            successMsg.style.display = "block";
+        }
+
+        function evaluatePassword(value) {
+            let score = 0;
+            if (value.length >= 8) score++;
+            if (/[A-Z]/.test(value)) score++;
+            if (/[a-z]/.test(value)) score++;
+            if (/[0-9]/.test(value)) score++;
+            if (/[^A-Za-z0-9]/.test(value)) score++;
+
+            if (!value) {
+                strengthFill.style.width = "0%";
+                strengthFill.style.background = "#d1d5db";
+                strengthText.textContent = t("strengthHint");
+                return;
+            }
+
+            if (score <= 2) {
+                strengthFill.style.width = "33%";
+                strengthFill.style.background = "#ef4444";
+                strengthText.textContent = t("weak");
+            } else if (score <= 4) {
+                strengthFill.style.width = "66%";
+                strengthFill.style.background = "#f59e0b";
+                strengthText.textContent = t("medium");
+            } else {
+                strengthFill.style.width = "100%";
+                strengthFill.style.background = "#22c55e";
+                strengthText.textContent = t("strong");
+            }
+        }
+
+        function updateIdFields() {
+            nationalIdField.classList.add("hidden");
+            passportField.classList.add("hidden");
+
+            if (userType.value === "national" || userType.value === "staff") {
+                nationalIdField.classList.remove("hidden");
+            } else if (userType.value === "foreign") {
+                passportField.classList.remove("hidden");
+            }
+        }
+
+        function validateContactInput() {
+            sendOtpBtn.disabled = !(otpMethod.value && contactValue.value.trim());
+        }
+
+        function startOtpCountdown() {
+            otpSeconds = 60;
+            sendOtpBtn.disabled = true;
+            sendOtpBtn.dataset.waiting = "true";
+            sendOtpBtn.textContent = `${t("wait")} ${otpSeconds}s`;
+
+            otpCountdown = setInterval(() => {
+                otpSeconds--;
+                sendOtpBtn.textContent = `${t("wait")} ${otpSeconds}s`;
+
+                if (otpSeconds <= 0) {
+                    clearInterval(otpCountdown);
+                    sendOtpBtn.dataset.waiting = "false";
+                    sendOtpBtn.textContent = t("sendOtp");
+                    validateContactInput();
+                }
+            }, 1000);
+        }
+
+        function getUsers() {
+            return JSON.parse(localStorage.getItem("serc_users") || "[]");
+        }
+
+        function saveUsers(users) {
+            localStorage.setItem("serc_users", JSON.stringify(users));
+        }
+
+        password.addEventListener("input", () => evaluatePassword(password.value));
+        userType.addEventListener("change", updateIdFields);
+        otpMethod.addEventListener("change", validateContactInput);
+        contactValue.addEventListener("input", validateContactInput);
+
+        document.querySelectorAll(".password-toggle").forEach(btn => {
+            btn.addEventListener("click", () => {
+                const target = document.getElementById(btn.dataset.target);
+                const isPassword = target.type === "password";
+                target.type = isPassword ? "text" : "password";
+                btn.textContent = isPassword ? t("hide") : t("show");
+            });
+        });
+
+        sendOtpBtn.addEventListener("click", () => {
+            if (!otpMethod.value || !contactValue.value.trim()) {
+                showError(t("otpMethodRequired"));
+                return;
+            }
+
+            generatedOtp = String(Math.floor(100000 + Math.random() * 900000));
+            showSuccess(`${t("otpSent")} ${generatedOtp}`);
+            if (otpCountdown) clearInterval(otpCountdown);
+            startOtpCountdown();
+        });
+
+        form.addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            const fullName = document.getElementById("fullName").value.trim();
+            const position = document.getElementById("position").value.trim();
+            const company = document.getElementById("company").value.trim();
+            const dob = document.getElementById("dob").value;
+            const username = document.getElementById("username").value.trim();
+            const email = document.getElementById("email").value.trim().toLowerCase();
+            const type = userType.value;
+            const nationalId = document.getElementById("nationalId").value.trim();
+            const passportId = document.getElementById("passportId").value.trim();
+            const otpCode = document.getElementById("otpCode").value.trim();
+
+            if (!fullName || !position || !company || !dob || !username || !email || !password.value || !confirmPassword.value || !type) {
+                showError(t("required"));
+                return;
+            }
+
+            if (password.value.length < 8) {
+                showError(t("pwdLen"));
+                return;
+            }
+
+            if (password.value !== confirmPassword.value) {
+                showError(t("pwdMatch"));
+                return;
+            }
+
+            if ((type === "national" || type === "staff") && !nationalId) {
+                showError(t("nationalRequired"));
+                return;
+            }
+
+            if (type === "foreign" && !passportId) {
+                showError(t("passportRequired"));
+                return;
+            }
+
+            if (!otpMethod.value || !contactValue.value.trim()) {
+                showError(t("otpMethodRequired"));
+                return;
+            }
+
+            if (!generatedOtp) {
+                showError(t("otpSendFirst"));
+                return;
+            }
+
+            if (otpCode !== generatedOtp) {
+                showError(t("otpInvalid"));
+                return;
+            }
+
+            const users = getUsers();
+
+            const existingUsername = users.find(u => u.username.toLowerCase() === username.toLowerCase());
+            if (existingUsername) {
+                showError(t("usernameExists"));
+                return;
+            }
+
+            const existingEmail = users.find(u => u.email.toLowerCase() === email);
+            if (existingEmail) {
+                showError(t("emailExists"));
+                return;
+            }
+
+            users.push({
+                fullName,
+                position,
+                company,
+                dob,
+                username,
+                email,
+                password: password.value,
+                userType: type,
+                nationalId,
+                passportId,
+                otpMethod: otpMethod.value,
+                contactValue: contactValue.value.trim(),
+                createdAt: new Date().toISOString()
+            });
+
+            saveUsers(users);
+            showSuccess(t("success"));
+            form.reset();
+            generatedOtp = "";
+            strengthFill.style.width = "0%";
+            strengthFill.style.background = "#d1d5db";
+            strengthText.textContent = t("strengthHint");
+            updateIdFields();
+            validateContactInput();
+            if (otpCountdown) clearInterval(otpCountdown);
+            sendOtpBtn.dataset.waiting = "false";
+            sendOtpBtn.textContent = t("sendOtp");
+            sendOtpBtn.disabled = true;
+
+            setTimeout(() => {
+                window.location.href = "index.html";
+            }, 1200);
+        });
+
+        document.getElementById("btnKm").addEventListener("click", () => applyLanguage("km"));
+        document.getElementById("btnEn").addEventListener("click", () => applyLanguage("en"));
+
+        updateIdFields();
+        validateContactInput();
+        applyLanguage("km");
+    </script>
+</body>
+</html>

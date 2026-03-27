@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Google Account Chooser Mock</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Siemreap&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #f1f5f9;
+      --card: #ffffff;
+      --text: #202124;
+      --muted: #5f6368;
+      --line: #dadce0;
+      --blue: #1a73e8;
+      --hover: #f8f9fa;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Siemreap", "Inter", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 1300px;
+      margin: 0 auto;
+      background: var(--card);
+      border-radius: 32px;
+      overflow: hidden;
+      box-shadow: 0 1px 2px rgba(60, 64, 67, 0.15), 0 2px 6px rgba(60, 64, 67, 0.1);
+    }
+
+    .card-top {
+      height: 60px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      padding: 0 18px;
+      gap: 12px;
+    }
+
+    .google-logo {
+      width: 26px;
+      height: 26px;
+      flex: 0 0 26px;
+    }
+
+    .top-title {
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    .card-body {
+      display: grid;
+      grid-template-columns: 1.05fr 1fr;
+      gap: 48px;
+      padding: 60px 42px 54px;
+      min-height: 380px;
+    }
+
+    .left h1 {
+      margin: 0 0 24px;
+      font-size: 54px;
+      line-height: 1.08;
+      font-weight: 500;
+      letter-spacing: -0.6px;
+    }
+
+    .left p {
+      margin: 0;
+      font-size: 18px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .left a {
+      color: var(--blue);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .accounts {
+      padding-top: 8px;
+    }
+
+    .account-item {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 0;
+      text-decoration: none;
+      color: var(--text);
+      border-bottom: 1px solid var(--line);
+      transition: background 0.2s ease;
+    }
+
+    .account-item:hover {
+      background: var(--hover);
+    }
+
+    .avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 600;
+      font-size: 17px;
+      flex: 0 0 34px;
+    }
+
+    .green { background: #3b7d2a; }
+    .purple { background: #ab47bc; }
+
+    .account-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .account-name {
+      font-size: 18px;
+      font-weight: 500;
+    }
+
+    .account-email {
+      font-size: 15px;
+      color: var(--muted);
+      font-family: "Inter", sans-serif;
+    }
+
+    .use-another {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 18px 0;
+      border-bottom: 1px solid var(--line);
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .use-another:hover {
+      background: var(--hover);
+    }
+
+    .person-icon {
+      width: 34px;
+      height: 34px;
+      flex: 0 0 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #5f6368;
+    }
+
+    .use-another span {
+      font-size: 18px;
+      font-weight: 500;
+    }
+
+    .footer {
+      width: 100%;
+      max-width: 1300px;
+      margin: 18px auto 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 18px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .footer-left select {
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      font: inherit;
+      padding: 6px 8px 6px 0;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .footer-right {
+      display: flex;
+      gap: 28px;
+    }
+
+    .footer-right a {
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    @media (max-width: 900px) {
+      .card-body {
+        grid-template-columns: 1fr;
+        gap: 28px;
+        padding: 36px 22px 30px;
+      }
+
+      .left h1 {
+        font-size: 38px;
+      }
+
+      .footer {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="card">
+      <div class="card-top">
+        <svg class="google-logo" viewBox="0 0 48 48" aria-hidden="true">
+          <path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303C33.654 32.657 29.193 36 24 36c-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.27 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"/>
+          <path fill="#FF3D00" d="M6.306 14.691l6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.27 4 24 4 16.318 4 9.656 8.337 6.306 14.691z"/>
+          <path fill="#4CAF50" d="M24 44c5.168 0 9.86-1.977 13.409-5.192l-6.19-5.238C29.143 35.091 26.715 36 24 36c-5.173 0-9.626-3.33-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44z"/>
+          <path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303a12.03 12.03 0 0 1-4.084 5.571h.003l6.19 5.238C36.971 39.205 44 34 44 24c0-1.341-.138-2.65-.389-3.917z"/>
+        </svg>
+        <div class="top-title">ចូលដោយប្រើ Google</div>
+      </div>
+
+      <div class="card-body">
+        <div class="left">
+          <h1>ជ្រើសគណនី</h1>
+          <p>
+            បន្តទៅកាន់
+            <a href="#">SERC E-flow</a>
+          </p>
+        </div>
+
+        <div class="accounts">
+          <a href="#" class="account-item">
+            <div class="avatar green">S</div>
+            <div class="account-text">
+              <div class="account-name">Sreng Sreymean</div>
+              <div class="account-email">sreymeansreng911@gmail.com</div>
+            </div>
+          </a>
+
+          <!-- <a href="#" class="account-item">
+            <div class="avatar purple">S</div>
+            <div class="account-text">
+              <div class="account-name">Sreymeas Sreng</div>
+              <div class="account-email">sreymeas.sreng.student123@gmail.com</div>
+            </div>
+          </a> -->
+
+          <div class="use-another">
+            <div class="person-icon">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M20 21a8 8 0 0 0-16 0"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+            </div>
+            <span>ប្រើគណនីផ្សេងទៀត</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="footer-left">
+        <select>
+          <option>ខ្មែរ</option>
+          <option>English</option>
+        </select>
+      </div>
+
+      <div class="footer-right">
+        <a href="#">ជំនួយ</a>
+        <a href="#">នយោបាយ</a>
+        <a href="#">លក្ខខណ្ឌ</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
